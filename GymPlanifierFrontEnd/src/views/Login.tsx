@@ -14,6 +14,7 @@ import Typography from '@mui/joy/Typography';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import customTheme from 'C:/xampp/htdocs/GymPlanifier/GymPlanifierFrontEnd/src/theme.ts';
+import useAuthContext from "../contexts/AuthContext.tsx";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -59,6 +60,12 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
  * This template uses [`Inter`](https://fonts.google.com/specimen/Inter?query=inter) font.
  */
 export default function Login()  {
+  //@ts-ignore
+  const {login, errors} = useAuthContext();
+  const handleLogin = async (data: object) => {
+    login(data);
+  }
+
   return (
     <CssVarsProvider
       defaultMode="dark"
@@ -175,17 +182,18 @@ export default function Login()  {
                   password: formElements.password.value,
                   persistent: formElements.persistent.checked,
                 };
-                alert(JSON.stringify(data, null, 2));
+                handleLogin(data);
               }}
             >
               <FormControl required>
                 <FormLabel>Email</FormLabel>
-                <Input type="email" name="email" />
+                <Input type="email" name="email" error={!!errors}/>
               </FormControl>
               <FormControl required>
                 <FormLabel>Password</FormLabel>
-                <Input type="password" name="password" />
+                <Input type="password" name="password" error={!!errors}/>
               </FormControl>
+              {errors && <span style={{color: 'red'}}>{errors?.email || errors?.password}</span>}
               <Box
                 sx={{
                   display: 'flex',

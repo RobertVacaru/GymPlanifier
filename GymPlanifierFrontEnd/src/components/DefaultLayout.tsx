@@ -1,16 +1,8 @@
 import {Navigate, Outlet} from "react-router-dom";
-import {useStateContext} from "../contexts/ContextProvider.tsx";
+import useAuthContext from "../contexts/AuthContext.tsx";
 
 export default function DefaultLayout() {
-  const {user, token} = useStateContext()
+  const user = useAuthContext();
 
-  if (!token) {
-    return <Navigate to={'/login'}/>
-  }
-
-  return (
-    <div>
-      <Outlet/>
-    </div>
-  )
+  return user ? <Outlet/> : <Navigate to={'/login'}/>
 }
