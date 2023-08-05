@@ -4,5 +4,5 @@ import useAuthContext from "../contexts/AuthContext.tsx";
 export default function GuestLayout() {
   const user = useAuthContext();
 
-  return !user ? <Outlet/> : <Navigate to={'/'}/>
+  return !user?.user ? <Outlet/> : <Navigate to={'/'}/>
 }

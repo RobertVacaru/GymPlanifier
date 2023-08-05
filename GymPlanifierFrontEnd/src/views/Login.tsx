@@ -13,7 +13,7 @@ import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import customTheme from 'C:/xampp/htdocs/GymPlanifier/GymPlanifierFrontEnd/src/theme.ts';
+import customTheme from '../theme.ts';
 import useAuthContext from "../contexts/AuthContext.tsx";
 
 interface FormElements extends HTMLFormControlsCollection {
