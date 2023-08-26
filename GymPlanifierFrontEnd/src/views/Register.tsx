@@ -8,18 +8,18 @@ import Checkbox from '@mui/joy/Checkbox';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel, { formLabelClasses } from '@mui/joy/FormLabel';
 import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import customTheme from '../theme.ts';
 import useAuthContext from "../contexts/AuthContext.tsx";
-import {useNavigate} from "react-router";
 
 interface FormElements extends HTMLFormControlsCollection {
+  name: HTMLInputElement;
   email: HTMLInputElement;
   password: HTMLInputElement;
+  password_confirmation: HTMLInputElement;
   persistent: HTMLInputElement;
 }
 interface SignInFormElement extends HTMLFormElement {
@@ -60,12 +60,11 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
 /**
  * This template uses [`Inter`](https://fonts.google.com/specimen/Inter?query=inter) font.
  */
-export default function Login()  {
+export default function Register()  {
   //@ts-ignore
-  const {login, errors} = useAuthContext();
-  const navigate = useNavigate();
-  const handleLogin = async (data: object) => {
-    login(data);
+  const {register, errors} = useAuthContext();
+  const handleRegister = async (data: object) => {
+    register(data);
   }
 
   return (
@@ -169,10 +168,7 @@ export default function Login()  {
           >
             <div>
               <Typography component="h1" fontSize="xl2" fontWeight="lg">
-                Sign in to your account
-              </Typography>
-              <Typography level="body2" sx={{ my: 1, mb: 3 }}>
-                Welcome back
+                Register your new account
               </Typography>
             </div>
             <form
@@ -180,13 +176,19 @@ export default function Login()  {
                 event.preventDefault();
                 const formElements = event.currentTarget.elements;
                 const data = {
+                  name: formElements.name.value,
                   email: formElements.email.value,
                   password: formElements.password.value,
+                  password_confirmation: formElements.password_confirmation.value,
                   persistent: formElements.persistent.checked,
                 };
-                handleLogin(data);
+                handleRegister(data);
               }}
             >
+              <FormControl required>
+                <FormLabel>Name</FormLabel>
+                <Input type="name" name="name" error={!!errors}/>
+              </FormControl>
               <FormControl required>
                 <FormLabel>Email</FormLabel>
                 <Input type="email" name="email" error={!!errors}/>
@@ -195,7 +197,11 @@ export default function Login()  {
                 <FormLabel>Password</FormLabel>
                 <Input type="password" name="password" error={!!errors}/>
               </FormControl>
-              {errors && <span style={{color: 'red'}}>{errors?.email || errors?.password}</span>}
+              <FormControl required>
+                <FormLabel>Confirm password</FormLabel>
+                <Input type="password" name="password_confirmation" error={!!errors}/>
+              </FormControl>
+              {errors && <span style={{color: 'red'}}>{errors?.email || errors?.password || errors?.password_confirmation}</span>}
               <Box
                 sx={{
                   display: 'flex',
@@ -204,22 +210,11 @@ export default function Login()  {
                 }}
               >
                 <Checkbox size="sm" label="Remember for 30 days" name="persistent" />
-                <Link fontSize="sm" href="#replace-with-a-link" fontWeight="lg">
-                  Forgot your password?
-                </Link>
               </Box>
               <Button type="submit" fullWidth>
-                Sign in
+                Register
               </Button>
             </form>
-            <Button
-              variant="outlined"
-              color="neutral"
-              fullWidth
-              onClick={() => navigate('/register')}
-            >
-              Register
-            </Button>
           </Box>
           <Box component="footer" sx={{ py: 3 }}>
             <Typography level="body3" textAlign="center">

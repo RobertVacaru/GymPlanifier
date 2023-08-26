@@ -28,7 +28,21 @@ export const AuthProvider = ({children}: any) => {
     }
   }
 
-  return <AuthContext.Provider value={{ user, errors, getUser, login}}>
+  const register = async (data: any) => {
+    await csrf();
+    try {
+      await axios.post('/register', data).then(() => {
+        getUser();
+        navigate('/');
+      });
+    } catch (e: any) {
+      if (e.response && e.response.status === 422){
+        setErrors(e.response.data.errors);
+      }
+    }
+  }
+
+  return <AuthContext.Provider value={{ user, errors, getUser, login, register}}>
     {children}
   </AuthContext.Provider>
 }
