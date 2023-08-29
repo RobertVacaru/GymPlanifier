@@ -1,11 +1,12 @@
 import {createContext, useContext, useState} from "react";
 import axios from "../api/axios.ts";
 import {useNavigate} from "react-router";
+import UserInterface from "../Interfaces/UserInterface";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({children}: any) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<UserInterface>(null);
   const [errors, setErrors] = useState('');
   const navigate = useNavigate();
   const csrf = () => axios.get("/sanctum/csrf-cookie");

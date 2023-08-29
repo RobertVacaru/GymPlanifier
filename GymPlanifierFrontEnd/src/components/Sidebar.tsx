@@ -19,6 +19,7 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 // import MuiLogo from './MuiLogo';
 import ColorSchemeToggle from './ColorSchemeToggle';
+import useAuthContext from "../contexts/AuthContext";
 
 const Dropdown = styled('i')(({ theme }) => ({
   color: theme.vars.palette.text.tertiary,
@@ -32,6 +33,8 @@ const closeSidebar = () => {
 };
 
 export default function Sidebar() {
+  const {user} = useAuthContext();
+
   return (
     <Sheet
       className="Sidebar"
@@ -116,7 +119,6 @@ export default function Sidebar() {
                 <i data-feather="home" />
               </ListItemDecorator>
               <ListItemContent>Home</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
             </ListItemButton>
           </ListItem>
           <ListItem>
@@ -203,37 +205,15 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
         </List>
-        <Card
-          variant="soft"
-          color="primary"
-          invertedColors
-          sx={{ boxShadow: 'none' }}
-        >
-          <Typography fontSize="sm" fontWeight="lg" mb={0.5}>
-            Used space
-          </Typography>
-          <Typography level="body-xs">
-            Your team has used 80% of your available space. Need more?
-          </Typography>
-          <LinearProgress value={80} determinate sx={{ my: 1.5 }} />
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Link fontSize="sm" component="button" fontWeight="lg">
-              Upgrade plan
-            </Link>
-            <Link fontSize="sm" component="button">
-              Dismiss
-            </Link>
-          </Box>
-        </Card>
       </Box>
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
         <Avatar variant="outlined" src="/static/images/avatar/3.jpg" />
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography fontSize="sm" fontWeight="lg">
-            Siriwat K.
+            {user.name}
           </Typography>
-          <Typography level="body-xs">siriwatk@test.com</Typography>
+          <Typography level="body-xs">{user.email}</Typography>
         </Box>
         <IconButton variant="plain" color="neutral">
           <i data-feather="log-out" />
