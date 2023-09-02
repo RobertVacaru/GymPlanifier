@@ -93,7 +93,7 @@ export default function MainPage() {
           <Typography id="variant-modal-title" level="h2" textColor="inherit">
             Modal Dialog
           </Typography>
-          <Divider className={"mb-2"} st/>
+          <Divider className={"mb-2"}/>
           <FormLabel>Input your preferred workout type</FormLabel>
           <Input>
           </Input>
