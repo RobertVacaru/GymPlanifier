@@ -1,7 +1,7 @@
-import {Fragment, ReactNode, useState} from "react";
+import {Fragment useState} from "react";
 import {BarChart, Bar, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 import HeaderPage from "../components/HeaderPage";
-import {Divider, FormLabel, Input, Modal, ModalClose, ModalDialog, Sheet, Stack, Typography} from "@mui/joy";
+import {Divider, FormLabel, Input, Modal, ModalClose, ModalDialog, Stack, Typography} from "@mui/joy";
 
 const data = [
   {
