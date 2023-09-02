@@ -1,5 +1,5 @@
 import {Route, Routes} from "react-router-dom";
-import Users from "./views/Users.tsx";
+import MainPage from "./views/MainPage.tsx";
 import Login from "./views/Login.tsx";
 import Register from "./views/Register.tsx";
 import DefaultLayout from "./components/DefaultLayout.tsx";
@@ -11,7 +11,7 @@ function App() {
     <>
       <Routes>
         <Route element={<DefaultLayout/>}>
-          <Route path="/" element={<Users/>}/>
+          <Route path="/" element={<MainPage/>}/>
         </Route>
         <Route element={<GuestLayout/>}>
           <Route path="/login" element={<Login/>}/>
