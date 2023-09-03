@@ -1,4 +1,4 @@
-import {Fragment useState} from "react";
+import {Fragment, useState} from "react";
 import {BarChart, Bar, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 import HeaderPage from "../components/HeaderPage";
 import {Divider, FormLabel, Input, Modal, ModalClose, ModalDialog, Stack, Typography} from "@mui/joy";
@@ -70,7 +70,7 @@ export default function MainPage() {
         <YAxis/>
         <Tooltip/>
         <Legend/>
-        <Bar dataKey="Average people working out at that hour" fill="#8884d8" onClick={() => setWorkoutModal(true)} legend/>
+        <Bar dataKey="Average people working out at that hour" fill="#8884d8" onClick={() => setWorkoutModal(true)}/>
         <Bar dataKey="People that scheduled their workouts for today" fill="#82ca9d"/>
       </BarChart>
 
