@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WorkoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,5 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
+
+Route::get('/workouts',[WorkoutController::class, 'index']);
+Route::get('/workouts/{uniqueId}',[WorkoutController::class, 'show']);
+Route::get('/workouts/{uniqueId}/ownedByUser',[WorkoutController::class, 'owned']);
 
 require __DIR__.'/auth.php';
