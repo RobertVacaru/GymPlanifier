@@ -21,5 +21,6 @@ Route::get('/', function () {
 Route::get('/workouts',[WorkoutController::class, 'index']);
 Route::get('/workouts/{uniqueId}',[WorkoutController::class, 'show']);
 Route::get('/workouts/{uniqueId}/ownedByUser',[WorkoutController::class, 'owned']);
+Route::get('/workouts/{uniqueId}/test',[WorkoutController::class, 'showName']);
 
 require __DIR__.'/auth.php';

@@ -1,7 +1,8 @@
 import {Fragment, useState} from "react";
 import {BarChart, Bar, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 import HeaderPage from "../components/HeaderPage";
-import {Divider, FormLabel, Input, Modal, ModalClose, ModalDialog, Stack, Typography} from "@mui/joy";
+import {Stack, Typography} from "@mui/joy";
+import AddWorkoutPopUp from "../components/PopUps/AddWorkoutPopUp";
 
 const data = [
   {
@@ -74,31 +75,10 @@ export default function MainPage() {
         <Bar dataKey="People that scheduled their workouts for today" fill="#82ca9d"/>
       </BarChart>
 
-      <Modal
-        aria-labelledby="close-modal-title"
-        open={workoutModal}
-        onClose={() => setWorkoutModal(false)}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <ModalDialog
-          aria-labelledby="variant-modal-title"
-          aria-describedby="variant-modal-description"
-          variant={"outlined"}
-        >
-          <ModalClose />
-          <Typography id="variant-modal-title" level="h2" textColor="inherit">
-            Modal Dialog
-          </Typography>
-          <Divider className={"mb-2"}/>
-          <FormLabel>Input your preferred workout type</FormLabel>
-          <Input>
-          </Input>
-        </ModalDialog>
-      </Modal>
+      <AddWorkoutPopUp
+        workoutModal={workoutModal}
+        setWorkoutModal={setWorkoutModal}
+      />
     </Fragment>
   )
 }

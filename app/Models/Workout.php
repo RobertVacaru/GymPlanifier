@@ -24,6 +24,8 @@ class Workout extends Model
         'date',
     ];
 
+    protected array $dates = ['deleted_at'];
+
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);

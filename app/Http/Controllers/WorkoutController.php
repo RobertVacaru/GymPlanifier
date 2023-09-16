@@ -24,4 +24,9 @@ class WorkoutController extends Controller
         return DB::table('workouts')->where('owner_id', $id)->get();
 
     }
+
+    public function showName(string $id): string
+    {
+        return  Workout::all()->find(1)->description;
+    }
 }

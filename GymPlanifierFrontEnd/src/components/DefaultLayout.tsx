@@ -25,7 +25,7 @@ export default function DefaultLayout() {
       feather.replace();
     }
   }, [status]);
-
+  // @ts-ignore
   return user?.user ?
     (
       <CssVarsProvider disableTransitionOnChange>

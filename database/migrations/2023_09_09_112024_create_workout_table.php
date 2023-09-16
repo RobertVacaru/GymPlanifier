@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('workouts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('owner_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
