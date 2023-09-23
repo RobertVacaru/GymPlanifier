@@ -55,6 +55,19 @@ export default function addWorkoutPopUp(props: Workout) {
                 <Divider className={"mb-2"}/>
 
                 <Form onSubmit={handleSubmit((data) => console.log(data))}>
+                    <Form.Group controlId="datePicker" className={"form-group"}>
+                        <FormLabel className={"label"}>Input your preferred date</FormLabel>
+                        <Input
+                            type="date"
+                            slotProps={{
+                                input: {
+                                    min: new Date().toISOString().split('T')[0],
+                                    max: '2023-09-24'
+                                }
+                            }}
+                            value={'2023-09-24'}
+                        />
+                    </Form.Group>
                     <Form.Group controlId="formSelect" className={"form-group"}>
                         <FormLabel className={"label"}>Input your preferred workout type</FormLabel>
                         <Select onChange={(e) => {
