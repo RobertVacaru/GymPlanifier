@@ -62,14 +62,11 @@ export default function addWorkoutPopUp(props: Workout) {
                             slotProps={{
                                 input: {
                                     min: new Date().toISOString().split('T')[0],
-                                    max: '2023-09-31'
+                                    max: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+7).toISOString().split('T')[0]
                                 }
                             }}
-                            defaultValue={'2023-09-24'}
-                            onChange={(e) => {
-                                console.log(e?.target?.value)
-                                setValue('dateWorkout', e?.target?.value)
-                            }}
+                            defaultValue={new Date().toISOString().split('T')[0]}
+                            onChange={(e) => setValue('dateWorkout', e?.target?.value)}
                         />
                     </Form.Group>
                     <Form.Group controlId="formSelect" className={"form-group"}>
