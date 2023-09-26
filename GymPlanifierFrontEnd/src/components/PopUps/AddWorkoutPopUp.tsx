@@ -1,7 +1,11 @@
 import {Divider, FormLabel, Input, Modal, ModalClose, ModalDialog, Option, Select, Slider, Typography} from "@mui/joy";
 import {Form} from "react-bootstrap";
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import {useState} from "react";
+import useAuthContext from "../../contexts/AuthContext.tsx";
+import UserInterface from "../../Interfaces/UserInterface.tsx";
+import axios from "../../api/axios.ts";
+import WorkoutDefaults from "../helpers/WorkoutDefaults.tsx"
 
 interface Workout {
     workoutModal: boolean,
@@ -12,8 +16,17 @@ export default function addWorkoutPopUp(props: Workout) {
     const {
         handleSubmit,
         formState: {errors},
-        setValue
-    } = useForm();
+        setError,
+        setValue,
+        getValues,
+        control
+    } = useForm({
+        defaultValues: new WorkoutDefaults()
+    });
+
+    const userContext  = useAuthContext();
+    // @ts-ignore
+    const  user :UserInterface = userContext?.user;
 
     const valueText = (value: number) => {
         return `${Math.floor(value)}:${((value - Math.floor(value)) * 60) !== 0 ? (value - Math.floor(value)) * 60 : '00'}`
@@ -29,6 +42,19 @@ export default function addWorkoutPopUp(props: Workout) {
         })
         setMarks(newMarks)
         setValue('hourInterval', newMarks)
+    }
+
+    const submit = async (data: any) => {
+        try {
+            console.log(user)
+            await axios.post(`/workouts/${user.id}/add`, data).then(() => {
+            });
+        } catch (e: any) {
+            if (e.response && e.response.status === 422) {
+                // @ts-ignore
+                setError(e.response.data.errors);
+            }
+        }
     }
 
     return (
@@ -54,7 +80,7 @@ export default function addWorkoutPopUp(props: Workout) {
                 </Typography>
                 <Divider className={"mb-2"}/>
 
-                <Form onSubmit={handleSubmit((data) => console.log(data))}>
+                <Form onSubmit={handleSubmit((data) => submit(data))}>
                     <Form.Group controlId="datePicker" className={"form-group"}>
                         <FormLabel className={"label"}>Input your preferred date</FormLabel>
                         <Input
@@ -71,14 +97,23 @@ export default function addWorkoutPopUp(props: Workout) {
                     </Form.Group>
                     <Form.Group controlId="formSelect" className={"form-group"}>
                         <FormLabel className={"label"}>Input your preferred workout type</FormLabel>
-                        <Select onChange={(e) => {
-                            setValue('workoutType', e?.target?.outerText)
-                        }}
-                        >
-                            {workouts.map((workout: any) => {
-                                return (<Option value={workout.value}>{workout.label}</Option>)
-                            })}
-                        </Select>
+                        <Controller
+                            name="workoutType"
+                            control={control}
+                            render={(field:{ onChange, onBlur, value }) => (
+                                <Select
+                                    id={'workoutType'}
+                                    onChange={(e) => {
+                                        setValue('workoutType', e?.target?.outerText)
+                                    }}
+                                    defaultValue={field.value}
+                                >
+                                    {workouts.map((workout: any) => {
+                                        return (<Option value={workout.value}>{workout.label}</Option>)
+                                    })}
+                                </Select>
+                            )}
+                        />
                     </Form.Group>
                     <Form.Group controlId={"formSlider"} className={"form-group"}>
                         <FormLabel className={"label"}>Input your preferred time interval</FormLabel>
