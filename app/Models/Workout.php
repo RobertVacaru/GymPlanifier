@@ -22,6 +22,8 @@ class Workout extends Model
         'description',
         'type',
         'date',
+        'startingHour',
+        'finishHour'
     ];
 
     protected array $dates = ['deleted_at'];

@@ -6,7 +6,7 @@ use App\Models\Workout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use JetBrains\PhpStorm\NoReturn;
+use Illuminate\Validation\ValidationException;
 
 class WorkoutController extends Controller
 {
@@ -31,9 +31,38 @@ class WorkoutController extends Controller
         return  Workout::all()->find(1)->description;
     }
 
-    #[NoReturn] public function store(string $id, Request $request): void
+    public function store(string $id, Request $request): \Illuminate\Http\JsonResponse
     {
-        var_dump($request->all());die;
-        return;
+        try{
+            $this->validate($request, [
+                'dateWorkout' => 'required|date|after_or_equal:today',
+                'workoutType' => 'required|max:100',
+                'hourInterval' => 'required|array',
+                'description' => 'max:200',
+            ]);
+
+            $workout = new Workout;
+
+            $workout->startingHour = $request->get('hourInterval')[0];
+            $workout->finishHour = $request->get('hourInterval')[1];
+            $workout->type = $request->get('workoutType');
+            $workout->date = $request->get('dateWorkout');
+            $workout->owner_id = \Auth::user();
+            $workout->description = '';
+            $workout->save();
+
+            return response()->json([
+                'status' => 'success',
+                'msg'    => 'Okay',
+            ], 201);
+
+        }catch (ValidationException $exception){
+            return response()->json([
+                'status' => 'error',
+                'msg'    => 'Error',
+                'errors' => $exception->errors(),
+            ], 422);
+        }
+
     }
 }
