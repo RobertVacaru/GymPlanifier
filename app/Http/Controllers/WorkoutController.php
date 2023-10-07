@@ -47,8 +47,8 @@ class WorkoutController extends Controller
             $workout->finishHour = $request->get('hourInterval')[1];
             $workout->type = $request->get('workoutType');
             $workout->date = $request->get('dateWorkout');
-            $workout->owner_id = \Auth::user();
-            $workout->description = '';
+            $workout->owner_id = \Auth::user()['id'];
+            $workout->description = $request->get('description');
             $workout->save();
 
             return response()->json([

@@ -1,4 +1,16 @@
-import {Divider, FormLabel, Input, Modal, ModalClose, ModalDialog, Option, Select, Slider, Typography} from "@mui/joy";
+import {
+    Divider,
+    FormLabel,
+    Input,
+    Modal,
+    ModalClose,
+    ModalDialog,
+    Option,
+    Select,
+    Slider,
+    Textarea,
+    Typography
+} from "@mui/joy";
 import {Form} from "react-bootstrap";
 import {Controller, useForm} from 'react-hook-form';
 import {useState} from "react";
@@ -46,8 +58,8 @@ export default function addWorkoutPopUp(props: Workout) {
 
     const submit = async (data: any) => {
         try {
-            console.log(user)
             await axios.post(`/workouts/${user.id}/add`, data).then(() => {
+              props.setWorkoutModal(false)
             });
         } catch (e: any) {
             if (e.response && e.response.status === 422) {
@@ -129,6 +141,20 @@ export default function addWorkoutPopUp(props: Workout) {
                             }}
                             valueLabelDisplay="off"
                             marks={marks}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId={"formDescription"} className={"form-group"}>
+                        <FormLabel className={"label"}>Input additional info about the workout</FormLabel>
+                        <Controller
+                            name="description"
+                            control={control}
+                            render={(field: { onChange, onBlur, value }) => (
+                                <Textarea
+                                    minRows={3}
+                                    {...field}
+                                    onChange={(e) => setValue('description', e?.target?.value)}
+                                />
+                            )}
                         />
                     </Form.Group>
                     <Input type={"submit"} style={{float: 'right'}}>Submit</Input>
