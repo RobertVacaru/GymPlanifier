@@ -55,8 +55,16 @@ export default function addWorkoutPopUp(props: Workout) {
         setMarks(newMarks)
         setValue('hourInterval', newMarks)
     }
+    const cleanHourInterval = (data: any) => {
+      if(data.hourInterval[0].label){
+        data.hourInterval[0] = data.hourInterval[0].value
+        data.hourInterval[1] = data.hourInterval[1].value
+      }
+      return data;
+    }
 
     const submit = async (data: any) => {
+        data = cleanHourInterval(data);
         try {
             await axios.post(`/workouts/${user.id}/add`, data).then(() => {
               props.setWorkoutModal(false)

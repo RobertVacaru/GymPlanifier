@@ -3,6 +3,7 @@ import {BarChart, Bar, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recha
 import HeaderPage from "../components/HeaderPage";
 import {Stack, Typography} from "@mui/joy";
 import AddWorkoutPopUp from "../components/PopUps/AddWorkoutPopUp";
+import axios from "../api/axios.ts";
 
 const data = [
   {
@@ -41,6 +42,13 @@ const data = [
     "Average people working out at that hour": 4300
   }
 ]
+const getWorkoutForToday = async () => {
+  await axios.get('/workoutsToday').then((response) => {
+    console.log(response)
+  });
+}
+
+getWorkoutForToday()
 
 export default function MainPage() {
   const [workoutModal, setWorkoutModal] = useState<boolean>(false);

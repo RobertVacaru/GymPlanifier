@@ -65,4 +65,11 @@ class WorkoutController extends Controller
         }
 
     }
+
+    public function showByDay(): array
+    {
+        $workouts = Workout::all()->where('date', '>=', date('Y-m-d').' 00:00:00');
+
+        return $workouts->toArray();
+    }
 }

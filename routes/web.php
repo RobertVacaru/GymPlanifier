@@ -24,5 +24,6 @@ Route::get('/workouts/{uniqueId}/ownedByUser',[WorkoutController::class, 'owned'
 Route::get('/workouts/{uniqueId}/test',[WorkoutController::class, 'showName']);
 
 Route::post('/workouts/{uniqueId}/add',[WorkoutController::class, 'store']);
+Route::get('/workoutsToday',[WorkoutController::class, 'showByDay']);
 
 require __DIR__.'/auth.php';

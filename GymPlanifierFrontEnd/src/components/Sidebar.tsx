@@ -93,7 +93,7 @@ export default function Sidebar() {
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
         {/*<MuiLogo />*/}
-        <Typography fontWeight="xl">MUI</Typography>
+        <Typography fontWeight="xl">Gym Planifier</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
       <Input startDecorator={<i data-feather="search" />} placeholder="Search" />
