@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Workout;
+use App\Services\WorkoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +11,10 @@ use Illuminate\Validation\ValidationException;
 
 class WorkoutController extends Controller
 {
+    public function __construct(
+        protected WorkoutService $workoutService,
+    ){}
+
     public function index(): Collection
     {
         return DB::table('workouts')->get();
@@ -68,8 +73,7 @@ class WorkoutController extends Controller
 
     public function showByDay(): array
     {
-        $workouts = Workout::all()->where('date', '>=', date('Y-m-d').' 00:00:00');
-
-        return $workouts->toArray();
+//        $workouts = Workout::all()->where('date', '>=', date('Y-m-d').' 00:00:00');
+        return $this->workoutService->getWorkoutsByIntervals();
     }
 }
