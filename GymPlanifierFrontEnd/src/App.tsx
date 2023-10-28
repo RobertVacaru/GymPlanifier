@@ -4,6 +4,7 @@ import Login from "./views/Login.tsx";
 import Register from "./views/Register.tsx";
 import DefaultLayout from "./components/DefaultLayout.tsx";
 import GuestLayout from "./components/GuestLayout.tsx";
+import MyWorkouts from "./views/MyWorkouts.tsx";
 
 function App() {
 
@@ -12,6 +13,9 @@ function App() {
       <Routes>
         <Route element={<DefaultLayout/>}>
           <Route path="/" element={<MainPage/>}/>
+        </Route>
+        <Route element={<DefaultLayout/>}>
+          <Route path="/myWorkouts" element={<MyWorkouts/>}/>
         </Route>
         <Route element={<GuestLayout/>}>
           <Route path="/login" element={<Login/>}/>

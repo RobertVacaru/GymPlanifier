@@ -1,7 +1,12 @@
 import {Divider, Stack, Typography} from "@mui/joy";
 import {Fragment} from "react";
 
-export default function HeaderPage (){
+interface HeaderProps{
+  headerText: string
+  headerSmallText: string
+}
+
+export default function HeaderPage (props: HeaderProps){
   return(
     <Fragment>
       <Stack
@@ -21,10 +26,10 @@ export default function HeaderPage (){
               md: 'xl4',
             }}
           >
-            Today's gym scheduled workouts charts
+            {props.headerText}
           </Typography>
           <Typography level="body-md" color="neutral">
-            Input your preferred workout and time availability
+            {props.headerSmallText}
           </Typography>
         </div>
       </Stack>

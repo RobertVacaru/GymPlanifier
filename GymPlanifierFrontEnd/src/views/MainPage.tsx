@@ -23,7 +23,7 @@ export default function MainPage() {
     }
   }, [workouts])
 
-  const getChartData = (workouts) => [
+  const getChartData = (workouts: { [x: string]: string | any[]; }) => [
       {
         "name": "8:00-10:00",
         "People that scheduled their workouts for today":  workouts['8:00']?.length,
@@ -63,7 +63,7 @@ export default function MainPage() {
 
   return (
     <Fragment>
-      <HeaderPage/>
+      <HeaderPage headerText={'Today\'s gym scheduled workouts charts'} headerSmallText={'Input your preferred workout and time availability'}/>
       <Stack
         direction={{
           xs: 'column',

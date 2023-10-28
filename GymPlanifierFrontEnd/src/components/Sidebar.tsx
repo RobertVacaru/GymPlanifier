@@ -4,12 +4,9 @@ import { styled } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
 import Input from '@mui/joy/Input';
-import Link from '@mui/joy/Link';
-import LinearProgress from '@mui/joy/LinearProgress';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
@@ -20,6 +17,7 @@ import Sheet from '@mui/joy/Sheet';
 // import MuiLogo from './MuiLogo';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import useAuthContext from "../contexts/AuthContext";
+import {useNavigate} from "react-router";
 
 const Dropdown = styled('i')(({ theme }) => ({
   color: theme.vars.palette.text.tertiary,
@@ -34,6 +32,7 @@ const closeSidebar = () => {
 
 export default function Sidebar() {
   const {user} = useAuthContext();
+  const navigate = useNavigate();
 
   return (
     <Sheet
@@ -135,8 +134,7 @@ export default function Sidebar() {
               <ListItemDecorator>
                 <i data-feather="layers" />
               </ListItemDecorator>
-              <ListItemContent>Projects</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
+              <ListItemContent onClick={() => navigate('/myWorkouts')}>My Workouts</ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
