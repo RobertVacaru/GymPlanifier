@@ -1,14 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
 import { ColorPaletteProp } from '@mui/joy/styles';
-import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import Link from '@mui/joy/Link';
 import Input from '@mui/joy/Input';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
@@ -17,7 +15,6 @@ import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import Table from '@mui/joy/Table';
 import Sheet from '@mui/joy/Sheet';
-import Checkbox from '@mui/joy/Checkbox';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Menu from '@mui/joy/Menu';
@@ -27,7 +24,6 @@ import Dropdown from '@mui/joy/Dropdown';
 // icons
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchIcon from '@mui/icons-material/Search';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import BlockIcon from '@mui/icons-material/Block';
 import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
@@ -37,7 +33,9 @@ import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import axios from "../api/axios.ts";
 import {useEffect, useState} from "react";
 import useAuthContext from "../contexts/AuthContext.tsx";
-import useScript from "../useScript.tsx";
+import WorkoutInterface from "../Interfaces/WorkoutInterface.tsx";
+import Avatar from "@mui/joy/Avatar";
+import Link from "@mui/joy/Link";
 
 const rows = [
   {
@@ -245,12 +243,13 @@ function RowMenu() {
 export default function WorkoutsTable() {
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [open, setOpen] = React.useState(false);
-  const [workoutData, setWorkoutData] = useState(null);
+  const [workoutData, setWorkoutData] = useState<WorkoutInterface[]|null>(null);
   const {user} = useAuthContext();
 
   const getOwnerWorkoutData = async () => {
     console.log('asd', user)
-    await axios.get('/workouts/ownedBy/' + user.id).then((response) => {
+    await axios.get('/workouts/'+ user.id +'/ownedByUser' ).then((response) => {
+      console.log(response.data)
       setWorkoutData(response.data)
     });
   }
@@ -260,6 +259,38 @@ export default function WorkoutsTable() {
       getOwnerWorkoutData()
     }
   }, [workoutData])
+
+  const cleanHour = (hour: string) => {
+    if (hour.includes('.5')){
+      return hour.slice(0, hour.indexOf('.')) + ':30'
+    }
+
+    return hour + ':00'
+  }
+
+  const getStatus = (startingHour: number, finishHour: number, date: string) => {
+    const workoutDate = new Date(date)
+    const actualDate = new Date()
+    const actualHour = actualDate.getHours()
+
+    if(workoutDate < actualDate) {
+      return "Finished"
+    } else if(workoutDate > actualDate){
+      return "To be done"
+    } else {
+      if(actualHour < finishHour &&  actualHour > startingHour){
+        return "In progress"
+      }
+      else if(actualHour > finishHour){
+        return "Finished"
+      } else if (actualHour < startingHour){
+        return "To be done"
+      }
+    }
+
+    return "Finished"
+  }
+
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -394,26 +425,6 @@ export default function WorkoutsTable() {
         >
           <thead>
           <tr>
-            <th style={{ width: 48, textAlign: 'center', padding: '12px 6px' }}>
-              <Checkbox
-                size="sm"
-                indeterminate={
-                  selected.length > 0 && selected.length !== rows.length
-                }
-                checked={selected.length === rows.length}
-                onChange={(event) => {
-                  setSelected(
-                    event.target.checked ? rows.map((row) => row.id) : [],
-                  );
-                }}
-                color={
-                  selected.length > 0 || selected.length === rows.length
-                    ? 'primary'
-                    : undefined
-                }
-                sx={{ verticalAlign: 'text-bottom' }}
-              />
-            </th>
             <th style={{ width: 140, padding: '12px 6px' }}>Date</th>
             <th style={{ width: 140, padding: '12px 6px' }}>Workout Type</th>
             <th style={{ width: 140, padding: '12px 6px' }}>Hour Interval</th>
@@ -423,32 +434,16 @@ export default function WorkoutsTable() {
           </tr>
           </thead>
           <tbody>
-          {rows.map((row) => (
-            <tr key={row.id}>
-              <td style={{ textAlign: 'center', width: 120 }}>
-                <Checkbox
-                  size="sm"
-                  checked={selected.includes(row.id)}
-                  color={selected.includes(row.id) ? 'primary' : undefined}
-                  onChange={(event) => {
-                    setSelected((ids) =>
-                      event.target.checked
-                        ? ids.concat(row.id)
-                        : ids.filter((itemId) => itemId !== row.id),
-                    );
-                  }}
-                  slotProps={{ checkbox: { sx: { textAlign: 'left' } } }}
-                  sx={{ verticalAlign: 'text-bottom' }}
-                />
+          {workoutData?.map((workout) => (
+            <tr key={workout.id}>
+              <td>
+                <Typography level="body-xs">{workout.date}</Typography>
               </td>
               <td>
-                <Typography level="body-xs">{row.date}</Typography>
+                <Typography level="body-xs">{workout.type}</Typography>
               </td>
               <td>
-                <Typography level="body-xs">{row.id}</Typography>
-              </td>
-              <td>
-                <Typography level="body-xs">{row.id}</Typography>
+                <Typography level="body-xs">{cleanHour(workout.startingHour) + ' - ' + cleanHour(workout.finishHour)}</Typography>
               </td>
               <td>
                 <Chip
@@ -456,28 +451,28 @@ export default function WorkoutsTable() {
                   size="sm"
                   startDecorator={
                     {
-                      Paid: <CheckRoundedIcon />,
-                      Refunded: <AutorenewRoundedIcon />,
-                      Cancelled: <BlockIcon />,
-                    }[row.status]
+                      "Finished": <CheckRoundedIcon />,
+                      "In progress": <AutorenewRoundedIcon />,
+                      "To be done": <BlockIcon />,
+                    }[getStatus(Number(workout.startingHour), Number(workout.finishHour), workout.date)]
                   }
                   color={
                     {
-                      Paid: 'success',
-                      Refunded: 'neutral',
-                      Cancelled: 'danger',
-                    }[row.status] as ColorPaletteProp
+                      "Finished": 'success',
+                      "In progress": 'neutral',
+                      "To be done": 'danger',
+                    }[getStatus(Number(workout.startingHour), Number(workout.finishHour), workout.date)] as ColorPaletteProp
                   }
                 >
-                  {row.status}
+                  {getStatus(Number(workout.startingHour), Number(workout.finishHour), workout.date)}
                 </Chip>
               </td>
               <td>
                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <Avatar size="sm">{row.customer.initial}</Avatar>
+                  <Avatar size="sm">{user.name.slice(0,1).toUpperCase()}</Avatar>
                   <div>
-                    <Typography level="body-xs">{row.customer.name}</Typography>
-                    <Typography level="body-xs">{row.customer.email}</Typography>
+                    <Typography level="body-xs">{user.name}</Typography>
+                    <Typography level="body-xs">{user.email}</Typography>
                   </div>
                 </Box>
               </td>

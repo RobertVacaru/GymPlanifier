@@ -1,6 +1,10 @@
 export default interface WorkoutInterface{
     id?: number,
-    dateWorkout: [],
-    workoutType: string,
-    hourInterval: []
+    date: string,
+    type: string,
+    startingHour: string,
+    finishHour: string,
+    description: string,
+    owner_id: number,
+    created_at: string
 }
