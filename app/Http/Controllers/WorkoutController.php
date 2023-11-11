@@ -22,7 +22,7 @@ class WorkoutController extends Controller
 
     public function show(string $id): Collection
     {
-        return DB::table('workouts')->find($id)->get();
+        return Workout::whereId($id)->get();
     }
 
     public function owned(string $id): Collection

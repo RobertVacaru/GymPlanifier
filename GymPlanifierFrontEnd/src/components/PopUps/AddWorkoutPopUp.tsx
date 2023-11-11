@@ -13,7 +13,7 @@ import {
 } from "@mui/joy";
 import {Form} from "react-bootstrap";
 import {Controller, useForm} from 'react-hook-form';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import useAuthContext from "../../contexts/AuthContext.tsx";
 import UserInterface from "../../Interfaces/UserInterface.tsx";
 import axios from "../../api/axios.ts";
@@ -21,21 +21,11 @@ import WorkoutDefaults from "../helpers/WorkoutDefaults.tsx"
 
 interface Workout {
     workoutModal: boolean,
-    setWorkoutModal: Function
+    setWorkoutModal: Function,
+    workoutId?: number|null
 }
 
 export default function addWorkoutPopUp(props: Workout) {
-    const {
-        handleSubmit,
-        formState: {errors},
-        setError,
-        setValue,
-        getValues,
-        control
-    } = useForm({
-        defaultValues: new WorkoutDefaults()
-    });
-
     const userContext  = useAuthContext();
     // @ts-ignore
     const  user :UserInterface = userContext?.user;
@@ -46,6 +36,18 @@ export default function addWorkoutPopUp(props: Workout) {
 
     const workouts = [{value: 1, label: 'Back'}, {value: 2, label: 'Chest'}];
     const [marks, setMarks] = useState([{value: 10, label: valueText(10)}, {value: 12, label: valueText(12)}]);
+    const [workoutData, setWorkoutData] = useState(null)
+
+    const {
+      handleSubmit,
+      formState: {errors},
+      setError,
+      setValue,
+      getValues,
+      control
+    } = useForm({
+      defaultValues: new WorkoutDefaults()
+    });
 
     const setValuesForMarks = (values: []) => {
         // you will always have two
@@ -76,6 +78,18 @@ export default function addWorkoutPopUp(props: Workout) {
             }
         }
     }
+
+    const getWorkoutData = async () => {
+      await axios.get('/workouts/' + props.workoutId ).then((response) => {
+        setWorkoutData(response.data)
+      });
+    }
+
+    useEffect(() => {
+      if (props.workoutId && !workoutData) {
+        getWorkoutData()
+      }
+    }, [props.workoutId]);
 
     return (
         <Modal

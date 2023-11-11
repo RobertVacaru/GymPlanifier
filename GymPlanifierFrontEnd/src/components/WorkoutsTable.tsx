@@ -37,217 +37,19 @@ import WorkoutInterface from "../Interfaces/WorkoutInterface.tsx";
 import Avatar from "@mui/joy/Avatar";
 import Link from "@mui/joy/Link";
 
-const rows = [
-  {
-    id: 'INV-1234',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  },
-  {
-    id: 'INV-1233',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-    },
-  },
-  {
-    id: 'INV-1232',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-    },
-  },
-  {
-    id: 'INV-1231',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-    },
-  },
-  {
-    id: 'INV-1230',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-    },
-  },
-  {
-    id: 'INV-1229',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-    },
-  },
-  {
-    id: 'INV-1228',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-    },
-  },
-  {
-    id: 'INV-1227',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-    },
-  },
-  {
-    id: 'INV-1226',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-    },
-  },
-  {
-    id: 'INV-1234',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  },
-  {
-    id: 'INV-1233',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-    },
-  },
-  {
-    id: 'INV-1232',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-    },
-  },
-  {
-    id: 'INV-1231',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-    },
-  },
-  {
-    id: 'INV-1230',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-    },
-  },
-  {
-    id: 'INV-1229',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-    },
-  },
-  {
-    id: 'INV-1228',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-    },
-  },
-  {
-    id: 'INV-1227',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-    },
-  },
-  {
-    id: 'INV-1226',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-    },
-  },
-];
-
-function RowMenu() {
-  return (
-    <Dropdown>
-      <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'sm' } }}
-      >
-        <MoreHorizRoundedIcon />
-      </MenuButton>
-      <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Edit</MenuItem>
-        <MenuItem>Rename</MenuItem>
-        <MenuItem>Move</MenuItem>
-        <Divider />
-        <MenuItem color="danger">Delete</MenuItem>
-      </Menu>
-    </Dropdown>
-  );
+interface PropsWorkout {
+  workoutPopUp: boolean,
+  setWorkoutPopUp: Function,
+  workoutId: number|null,
+  setWorkoutId: Function,
 }
 
-export default function WorkoutsTable() {
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
+export default function WorkoutsTable(props: PropsWorkout) {
   const [open, setOpen] = React.useState(false);
   const [workoutData, setWorkoutData] = useState<WorkoutInterface[]|null>(null);
   const {user} = useAuthContext();
 
   const getOwnerWorkoutData = async () => {
-    console.log('asd', user)
     await axios.get('/workouts/'+ user.id +'/ownedByUser' ).then((response) => {
       console.log(response.data)
       setWorkoutData(response.data)
@@ -269,21 +71,21 @@ export default function WorkoutsTable() {
   }
 
   const getStatus = (startingHour: number, finishHour: number, date: string) => {
-    const workoutDate = new Date(date)
-    const actualDate = new Date()
-    const actualHour = actualDate.getHours()
+    const workoutDate: number = new Date(date).getDay()
+    let actualDate: Date|number = new Date()
+    const actualHour: number = actualDate.getHours()
+    actualDate = actualDate.getDay()
 
-    if(workoutDate < actualDate) {
+    if (workoutDate < actualDate) {
       return "Finished"
-    } else if(workoutDate > actualDate){
+    } else if (workoutDate > actualDate) {
       return "To be done"
     } else {
-      if(actualHour < finishHour &&  actualHour > startingHour){
+      if (actualHour < finishHour && actualHour > startingHour) {
         return "In progress"
-      }
-      else if(actualHour > finishHour){
+      } else if (actualHour > finishHour) {
         return "Finished"
-      } else if (actualHour < startingHour){
+      } else if (actualHour < startingHour) {
         return "To be done"
       }
     }
@@ -481,7 +283,24 @@ export default function WorkoutsTable() {
                   <Link level="body-xs" component="button">
                     Download
                   </Link>
-                  <RowMenu />
+                  <Dropdown>
+                    <MenuButton
+                      slots={{ root: IconButton }}
+                      slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'sm' } }}
+                    >
+                      <MoreHorizRoundedIcon />
+                    </MenuButton>
+                    <Menu size="sm" sx={{ minWidth: 140 }}>
+                      <MenuItem onClick={() => {
+                        props.setWorkoutPopUp(true)
+                        props.setWorkoutId(workout.id)
+                      }}>Edit</MenuItem>
+                      <MenuItem>Rename</MenuItem>
+                      <MenuItem>Move</MenuItem>
+                      <Divider />
+                      <MenuItem color="danger">Delete</MenuItem>
+                    </Menu>
+                  </Dropdown>
                 </Box>
               </td>
             </tr>

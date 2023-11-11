@@ -117,7 +117,7 @@ export default function Sidebar() {
               <ListItemDecorator>
                 <i data-feather="home" />
               </ListItemDecorator>
-              <ListItemContent>Home</ListItemContent>
+              <ListItemContent onClick={() => navigate('/')}>Home</ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
