@@ -2,7 +2,7 @@ import {Navigate, Outlet} from "react-router-dom";
 import useAuthContext from "../contexts/AuthContext.tsx";
 
 export default function GuestLayout() {
-  const user = useAuthContext();
+  const {user} = useAuthContext();
 
-  return !user?.user ? <Outlet/> : <Navigate to={'/'}/>
+  return !user ? <Outlet/> : <Navigate to={'/'}/>
 }

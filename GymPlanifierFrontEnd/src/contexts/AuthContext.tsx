@@ -6,7 +6,7 @@ import UserInterface from "../Interfaces/UserInterface";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({children}: any) => {
-  const [user, setUser] = useState<UserInterface>(null);
+  const [user, setUser] = useState<UserInterface|null>(null);
   const [errors, setErrors] = useState('');
   const navigate = useNavigate();
   const csrf = () => axios.get("/sanctum/csrf-cookie");
@@ -50,7 +50,13 @@ export const AuthProvider = ({children}: any) => {
     }
   }
 
-  return <AuthContext.Provider value={{ user, errors, getUser, login, register}}>
+  const logout = () => {
+    axios.post("/logout").then(() => {
+      setUser(null)
+    })
+  }
+
+  return <AuthContext.Provider value={{ user, errors, getUser, login, register, logout}}>
     {children}
   </AuthContext.Provider>
 }

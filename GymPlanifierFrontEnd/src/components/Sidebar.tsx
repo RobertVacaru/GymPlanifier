@@ -31,7 +31,7 @@ const closeSidebar = () => {
 };
 
 export default function Sidebar() {
-  const {user} = useAuthContext();
+  const {user, logout} = useAuthContext();
   const navigate = useNavigate();
 
   return (
@@ -213,7 +213,7 @@ export default function Sidebar() {
           </Typography>
           <Typography level="body-xs">{user.email}</Typography>
         </Box>
-        <IconButton variant="plain" color="neutral">
+        <IconButton variant="plain" color="neutral" onClick={() => logout()}>
           <i data-feather="log-out" />
         </IconButton>
       </Box>
