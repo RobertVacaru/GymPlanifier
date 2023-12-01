@@ -33,6 +33,7 @@ const closeSidebar = () => {
 export default function Sidebar() {
   const {user, logout} = useAuthContext();
   const navigate = useNavigate();
+  const [index, setIndex] = React.useState(0);
 
   return (
     <Sheet
@@ -113,67 +114,54 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
-            <ListItemButton>
+            <ListItemButton selected={ index === 0 }>
               <ListItemDecorator>
                 <i data-feather="home" />
               </ListItemDecorator>
-              <ListItemContent onClick={() => navigate('/')}>Home</ListItemContent>
+              <ListItemContent onClick={() => {
+                navigate('/')
+                setIndex(1)
+              }}>Home</ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="bar-chart-2" />
-              </ListItemDecorator>
-              <ListItemContent>Dashboard</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
+            <ListItemButton selected={ index === 1 }>
               <ListItemDecorator>
                 <i data-feather="layers" />
               </ListItemDecorator>
-              <ListItemContent onClick={() => navigate('/myWorkouts')}>My Workouts</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="check-square" />
-              </ListItemDecorator>
-              <ListItemContent>Tasks</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="flag" />
-              </ListItemDecorator>
-              <ListItemContent>Reporting</ListItemContent>
-              <Dropdown data-feather="chevron-down" />
+              <ListItemContent onClick={() => {
+                navigate('/myWorkouts')
+                setIndex(1)
+              }}>My Workouts</ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem nested>
-            <ListItemButton>
+            <ListItemButton selected={ index === 2 }>
               <ListItemDecorator>
                 <i data-feather="bar-chart-2" />
               </ListItemDecorator>
-              <ListItemContent>Users</ListItemContent>
+              <ListItemContent onClick={() => {
+                setIndex(2)
+              }}>Users</ListItemContent>
               <i data-feather="chevron-up" />
             </ListItemButton>
             <List>
               <ListItem>
-                <ListItemButton selected color="primary">
+                <ListItemButton selected={index === 3} color={index === 3 ? "primary" : undefined} onClick={() => {
+                  setIndex(3)
+                }}>
                   My Profile
                 </ListItemButton>
               </ListItem>
               <ListItem>
-                <ListItemButton>New user</ListItemButton>
+                <ListItemButton selected={index === 4} color={index === 4 ? "primary" : undefined} onClick={() => {
+                  setIndex(4)
+                }}>New user</ListItemButton>
               </ListItem>
               <ListItem>
-                <ListItemButton>Role & Permission</ListItemButton>
+                <ListItemButton selected={index === 5} color={index === 5 ? "primary" : undefined} onClick={() => {
+                  setIndex(5)
+                }}>Role & Permission</ListItemButton>
               </ListItem>
             </List>
           </ListItem>
@@ -186,14 +174,6 @@ export default function Sidebar() {
             '--List-gap': '8px',
           }}
         >
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="life-buoy" />
-              </ListItemDecorator>
-              <ListItemContent>Supports</ListItemContent>
-            </ListItemButton>
-          </ListItem>
           <ListItem>
             <ListItemButton>
               <ListItemDecorator>
