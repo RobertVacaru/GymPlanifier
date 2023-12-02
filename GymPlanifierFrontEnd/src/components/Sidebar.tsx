@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
-import { styled } from '@mui/joy/styles';
+import {styled} from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -14,12 +14,13 @@ import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-// import MuiLogo from './MuiLogo';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import useAuthContext from "../contexts/AuthContext";
 import {useNavigate} from "react-router";
+import {useState} from "react";
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
-const Dropdown = styled('i')(({ theme }) => ({
+const Dropdown = styled('i')(({theme}) => ({
   color: theme.vars.palette.text.tertiary,
 }));
 
@@ -33,7 +34,8 @@ const closeSidebar = () => {
 export default function Sidebar() {
   const {user, logout} = useAuthContext();
   const navigate = useNavigate();
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = useState(0);
+  const [arrow, setArrow] = useState(true);
 
   return (
     <Sheet
@@ -91,12 +93,12 @@ export default function Sidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+      <Box sx={{display: 'flex', gap: 1, alignItems: 'center'}}>
         {/*<MuiLogo />*/}
         <Typography fontWeight="xl">Gym Planifier</Typography>
-        <ColorSchemeToggle sx={{ ml: 'auto' }} />
+        <ColorSchemeToggle sx={{ml: 'auto'}}/>
       </Box>
-      <Input startDecorator={<i data-feather="search" />} placeholder="Search" />
+      <Input startDecorator={<i data-feather="search"/>} placeholder="Search"/>
       <Box
         sx={{
           minHeight: 0,
@@ -114,9 +116,9 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
-            <ListItemButton selected={ index === 0 }>
+            <ListItemButton selected={index === 0}>
               <ListItemDecorator>
-                <i data-feather="home" />
+                <i data-feather="home"/>
               </ListItemDecorator>
               <ListItemContent onClick={() => {
                 navigate('/')
@@ -125,9 +127,9 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton selected={ index === 1 }>
+            <ListItemButton selected={index === 1}>
               <ListItemDecorator>
-                <i data-feather="layers" />
+                <i data-feather="layers"/>
               </ListItemDecorator>
               <ListItemContent onClick={() => {
                 navigate('/myWorkouts')
@@ -135,16 +137,18 @@ export default function Sidebar() {
               }}>My Workouts</ListItemContent>
             </ListItemButton>
           </ListItem>
+          <ListItemButton selected={index === 2} onClick={() => {
+            setIndex(2)
+            setArrow(!arrow)
+          }}>
+            <ListItemDecorator>
+              <i data-feather="bar-chart-2"/>
+            </ListItemDecorator>
+            <ListItemContent>Users</ListItemContent>
+            {arrow ? <ExpandLess/> : <ExpandMore/>}
+          </ListItemButton>
           <ListItem nested>
-            <ListItemButton selected={ index === 2 }>
-              <ListItemDecorator>
-                <i data-feather="bar-chart-2" />
-              </ListItemDecorator>
-              <ListItemContent onClick={() => {
-                setIndex(2)
-              }}>Users</ListItemContent>
-              <i data-feather="chevron-up" />
-            </ListItemButton>
+          {arrow &&
             <List>
               <ListItem>
                 <ListItemButton selected={index === 3} color={index === 3 ? "primary" : undefined} onClick={() => {
@@ -163,7 +167,7 @@ export default function Sidebar() {
                   setIndex(5)
                 }}>Role & Permission</ListItemButton>
               </ListItem>
-            </List>
+            </List>}
           </ListItem>
         </List>
         <List
@@ -177,24 +181,24 @@ export default function Sidebar() {
           <ListItem>
             <ListItemButton>
               <ListItemDecorator>
-                <i data-feather="settings" />
+                <i data-feather="settings"/>
               </ListItemDecorator>
               <ListItemContent>Settings</ListItemContent>
             </ListItemButton>
           </ListItem>
         </List>
       </Box>
-      <Divider />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Avatar variant="outlined" src="/static/images/avatar/3.jpg" />
-        <Box sx={{ minWidth: 0, flex: 1 }}>
+      <Divider/>
+      <Box sx={{display: 'flex', gap: 1, alignItems: 'center'}}>
+        <Avatar variant="outlined" src="/static/images/avatar/3.jpg"/>
+        <Box sx={{minWidth: 0, flex: 1}}>
           <Typography fontSize="sm" fontWeight="lg">
             {user.name}
           </Typography>
           <Typography level="body-xs">{user.email}</Typography>
         </Box>
         <IconButton variant="plain" color="neutral" onClick={() => logout()}>
-          <i data-feather="log-out" />
+          <i data-feather="log-out"/>
         </IconButton>
       </Box>
     </Sheet>
