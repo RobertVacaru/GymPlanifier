@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Workout;
 use App\Services\WorkoutService;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -25,10 +26,10 @@ class WorkoutController extends Controller
         return Workout::whereId($id)->get();
     }
 
-    public function owned(string $id): Collection
+    public function owned(string $id, Request $request): LengthAwarePaginator
     {
-        return DB::table('workouts')->where('owner_id', $id)->get();
-
+        $page = $request->get('page');
+        return DB::table('workouts')->where('owner_id', $id)->paginate(15, page: $page);
     }
 
     public function showName(string $id): string

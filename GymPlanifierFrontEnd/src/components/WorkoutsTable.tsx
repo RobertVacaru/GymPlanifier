@@ -49,10 +49,10 @@ export default function WorkoutsTable(props: PropsWorkout) {
   const [workoutData, setWorkoutData] = useState<WorkoutInterface[]|null>(null);
   const {user} = useAuthContext();
 
-  const getOwnerWorkoutData = async () => {
-    await axios.get('/workouts/'+ user.id +'/ownedByUser' ).then((response) => {
+  const getOwnerWorkoutData = async (page: number = 1) => {
+    await axios.get('/workouts/'+ user.id +'/ownedByUser', {params: {page: page}}).then((response) => {
       console.log(response.data)
-      setWorkoutData(response.data)
+      setWorkoutData(response.data.data)
     });
   }
 
@@ -336,6 +336,7 @@ export default function WorkoutsTable(props: PropsWorkout) {
             size="sm"
             variant={Number(page) ? 'outlined' : 'plain'}
             color="neutral"
+            onClick={() => getOwnerWorkoutData(Number(page))}
           >
             {page}
           </IconButton>
