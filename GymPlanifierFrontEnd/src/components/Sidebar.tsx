@@ -137,6 +137,17 @@ export default function Sidebar() {
               }}>My Workouts</ListItemContent>
             </ListItemButton>
           </ListItem>
+          <ListItem>
+            <ListItemButton selected={index === 6}>
+              <ListItemDecorator>
+                <i data-feather="plus"/>
+              </ListItemDecorator>
+              <ListItemContent onClick={() => {
+                navigate('/addWorkout')
+                setIndex(6)
+              }}>Add Workout</ListItemContent>
+            </ListItemButton>
+          </ListItem>
           <ListItemButton selected={index === 2} onClick={() => {
             setIndex(2)
             setArrow(!arrow)
