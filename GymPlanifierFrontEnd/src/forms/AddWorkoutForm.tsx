@@ -10,7 +10,8 @@ import axios from "../api/axios.ts";
 interface Workout {
   workoutModal?: boolean,
   setWorkoutModal?: Function,
-  workoutId?: number|null
+  workoutId?: number|null,
+  hourInterval?: string|null
 }
 
 export default function AddWorkoutForm(props?: Workout) {
@@ -25,6 +26,7 @@ export default function AddWorkoutForm(props?: Workout) {
   const workouts = [{value: 1, label: 'Back'}, {value: 2, label: 'Chest'}];
   const [marks, setMarks] = useState([{value: 10, label: valueText(10)}, {value: 12, label: valueText(12)}]);
   const [workoutData, setWorkoutData] = useState(null)
+  const [hourInterval, setHourInterval] = useState<Array<number>>([10,12])
 
   const {
     handleSubmit,
@@ -37,15 +39,24 @@ export default function AddWorkoutForm(props?: Workout) {
     defaultValues: new WorkoutDefaults()
   });
 
+  useEffect(() => {
+    if(props?.hourInterval){
+      let [start, end] = props.hourInterval.split('-');
+      [start, end] = [start.split(':')[0], end.split(':')[0]]
+      setHourInterval([Number(start),Number(end)])
+      setMarks([{value: Number(start), label: start}, {value: Number(end), label: end}])
+    }
+  }, [props?.hourInterval]);
   const setValuesForMarks = (values: []) => {
     // you will always have two
     let newMarks = values.map((value: number) => {
       return {value: value, label: valueText(value)}
     })
     setMarks(newMarks)
-    setValue('hourInterval', newMarks)
+    setHourInterval([newMarks[0].value, newMarks[1].value])
   }
   const cleanHourInterval = (data: any) => {
+    data.hourInterval = marks;
     if(data.hourInterval[0].label){
       data.hourInterval[0] = data.hourInterval[0].value
       data.hourInterval[1] = data.hourInterval[1].value
@@ -124,11 +135,12 @@ export default function AddWorkoutForm(props?: Workout) {
         <Form.Group controlId={"formSlider"} className={"form-group"}>
           <FormLabel className={"label"}>Input your preferred time interval</FormLabel>
           <Slider
+            id='hourSlider'
             getAriaLabel={() => 'Workout Time interval'}
             min={8}
             max={22}
             step={0.5}
-            defaultValue={[10, 12]}
+            value={hourInterval}
             onChange={(e) => {
               // @ts-ignore
               setValuesForMarks(e?.target.value)

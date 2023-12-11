@@ -4,7 +4,8 @@ import AddWorkoutForm from "../../forms/AddWorkoutForm.tsx";
 interface Workout {
     workoutModal: boolean,
     setWorkoutModal: Function,
-    workoutId?: number|null
+    workoutId?: number|null,
+    hourInterval?: string|null
 }
 
 export default function addWorkoutPopUp(props: Workout) {
@@ -27,7 +28,7 @@ export default function addWorkoutPopUp(props: Workout) {
                 sx={{width: '35rem'}}
             >
                 <ModalClose/>
-                <AddWorkoutForm setWorkoutModal={props.setWorkoutModal} workoutModal={props.workoutModal} workoutId={props.workoutId}/>
+                <AddWorkoutForm setWorkoutModal={props.setWorkoutModal} workoutModal={props.workoutModal} workoutId={props.workoutId} hourInterval={props.hourInterval}/>
             </ModalDialog>
         </Modal>)
 }

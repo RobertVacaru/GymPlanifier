@@ -9,6 +9,7 @@ export default function MainPage() {
   const [workoutModal, setWorkoutModal] = useState<boolean>(false)
   const [workouts, setWorkouts] = useState(null)
   const [chartData, setChartData] = useState<Array<any>>()
+  const [hourInterval, setHourInterval] = useState('')
 
   const getWorkoutForToday = async () => {
     await axios.get('/workoutsToday').then((response) => {
@@ -88,7 +89,10 @@ export default function MainPage() {
           <YAxis domain={[0,30]}/>
           <Tooltip/>
           <Legend/>
-          <Bar dataKey="Average people working out at that hour" fill="#8884d8" onClick={() => setWorkoutModal(true)}/>
+          <Bar dataKey="Average people working out at that hour" fill="#8884d8" onClick={(val) => {
+            setWorkoutModal(true)
+            setHourInterval(val.name)
+          }}/>
           <Bar dataKey="People that scheduled their workouts for today" fill="#82ca9d"/>
         </BarChart>
       </ResponsiveContainer>
@@ -96,6 +100,7 @@ export default function MainPage() {
       <AddWorkoutPopUp
         workoutModal={workoutModal}
         setWorkoutModal={setWorkoutModal}
+        hourInterval={hourInterval}
       />
     </Fragment>
   )
