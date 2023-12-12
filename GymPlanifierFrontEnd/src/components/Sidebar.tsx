@@ -98,7 +98,7 @@ export default function Sidebar() {
         <Typography fontWeight="xl">Gym Planifier</Typography>
         <ColorSchemeToggle sx={{ml: 'auto'}}/>
       </Box>
-      <Input startDecorator={<i data-feather="search"/>} placeholder="Search"/>
+      <Divider/>
       <Box
         sx={{
           minHeight: 0,

@@ -196,6 +196,15 @@ export default function Login()  {
                 <Input type="password" name="password" error={!!errors}/>
               </FormControl>
               {errors && <span style={{color: 'red'}}>{errors?.email || errors?.password}</span>}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Checkbox size="sm" label="Remember for 30 days" name="persistent" />
+                </Box>
               <Button type="submit" fullWidth>
                 Sign in
               </Button>
