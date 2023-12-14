@@ -10,6 +10,7 @@ export default function MainPage() {
   const [workouts, setWorkouts] = useState(null)
   const [chartData, setChartData] = useState<Array<any>>()
   const [hourInterval, setHourInterval] = useState('')
+  const [refreshData, setRefreshData] = useState<boolean|null>()
 
   const getWorkoutForToday = async () => {
     await axios.get('/workoutsToday').then((response) => {
@@ -23,6 +24,14 @@ export default function MainPage() {
       getWorkoutForToday()
     }
   }, [workouts])
+
+    useEffect(() => {
+        if(refreshData === true){
+            getWorkoutForToday().then(() => {
+                setRefreshData(false)
+            })
+        }
+    }, [refreshData]);
 
   const getChartData = (workouts: { [x: string]: string | any[]; }) => [
       {
@@ -101,6 +110,7 @@ export default function MainPage() {
         workoutModal={workoutModal}
         setWorkoutModal={setWorkoutModal}
         hourInterval={hourInterval}
+        refreshData={setRefreshData}
       />
     </Fragment>
   )

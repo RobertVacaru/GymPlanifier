@@ -11,7 +11,8 @@ interface Workout {
   workoutModal?: boolean,
   setWorkoutModal?: Function,
   workoutId?: number|null,
-  hourInterval?: string|null
+  hourInterval?: string|null,
+  refreshData?: Function
 }
 
 export default function AddWorkoutForm(props?: Workout) {
@@ -69,6 +70,9 @@ export default function AddWorkoutForm(props?: Workout) {
     try {
       await axios.post(`/workouts/${user.id}/add`, data).then(() => {
         props.setWorkoutModal(false)
+        if(props?.refreshData) {
+          props.refreshData(true)
+        }
       });
     } catch (e: any) {
       if (e.response && e.response.status === 422) {

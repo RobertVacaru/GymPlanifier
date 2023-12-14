@@ -189,14 +189,14 @@ export default function Sidebar() {
             '--List-gap': '8px',
           }}
         >
-          <ListItem>
-            <ListItemButton>
-              <ListItemDecorator>
-                <i data-feather="settings"/>
-              </ListItemDecorator>
-              <ListItemContent>Settings</ListItemContent>
-            </ListItemButton>
-          </ListItem>
+            {/*{<ListItem>*/}
+            {/*    <ListItemButton>*/}
+            {/*        <ListItemDecorator>*/}
+            {/*            <i data-feather="settings"/>*/}
+            {/*        </ListItemDecorator>*/}
+            {/*        <ListItemContent>Settings</ListItemContent>*/}
+            {/*    </ListItemButton>*/}
+            {/*</ListItem>}*/}
         </List>
       </Box>
       <Divider/>
