@@ -6,6 +6,7 @@ interface Workout {
     setWorkoutModal: Function,
     workoutId?: number|null,
     hourInterval?: string|null,
+    workoutType?: string|null
     refreshData?: Function
 }
 
@@ -29,7 +30,14 @@ export default function addWorkoutPopUp(props: Workout) {
                 sx={{width: '35rem'}}
             >
                 <ModalClose/>
-                <AddWorkoutForm setWorkoutModal={props.setWorkoutModal} workoutModal={props.workoutModal} workoutId={props.workoutId} hourInterval={props.hourInterval} refreshData={props.refreshData}/>
+                <AddWorkoutForm
+                  setWorkoutModal={props.setWorkoutModal}
+                  workoutModal={props.workoutModal}
+                  workoutId={props.workoutId}
+                  hourInterval={props.hourInterval}
+                  workoutType={props.workoutType}
+                  refreshData={props.refreshData}
+                />
             </ModalDialog>
         </Modal>)
 }

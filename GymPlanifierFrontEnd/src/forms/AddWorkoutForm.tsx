@@ -12,6 +12,7 @@ interface Workout {
   setWorkoutModal?: Function,
   workoutId?: number|null,
   hourInterval?: string|null,
+  workoutType?: string|null
   refreshData?: Function
 }
 
@@ -48,6 +49,7 @@ export default function AddWorkoutForm(props?: Workout) {
       setMarks([{value: Number(start), label: start}, {value: Number(end), label: end}])
     }
   }, [props?.hourInterval]);
+
   const setValuesForMarks = (values: []) => {
     // you will always have two
     let newMarks = values.map((value: number) => {
@@ -56,6 +58,7 @@ export default function AddWorkoutForm(props?: Workout) {
     setMarks(newMarks)
     setHourInterval([newMarks[0].value, newMarks[1].value])
   }
+
   const cleanHourInterval = (data: any) => {
     data.hourInterval = marks;
     if(data.hourInterval[0].label){
@@ -119,15 +122,14 @@ export default function AddWorkoutForm(props?: Workout) {
         <Form.Group controlId="formSelect" className={"form-group"}>
           <FormLabel className={"label"}>Input your preferred workout type</FormLabel>
           <Controller
-            name="workoutType"
+            name="type"
             control={control}
             render={(field: { onChange, onBlur, value }) => (
               <Select
-                id={'workoutType'}
                 onChange={(e) => {
-                  setValue('workoutType', e?.target?.outerText)
+                  setValue('type', e?.target?.outerText)
                 }}
-                defaultValue={field.value}
+                defaultValue={props?.workoutType ?? field.value}
               >
                 {workouts.map((workout: any) => {
                   return (<Option value={workout.value}>{workout.label}</Option>)

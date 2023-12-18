@@ -13,6 +13,7 @@ export default function MainPage() {
   const [workouts, setWorkouts] = useState(null)
   const [chartData, setChartData] = useState<Array<any>>()
   const [hourInterval, setHourInterval] = useState('')
+  const [workoutType, setWorkoutType] = useState('')
   const [refreshData, setRefreshData] = useState<boolean|null>()
 
   const getWorkoutForToday = async () => {
@@ -125,12 +126,14 @@ export default function MainPage() {
                 Type of workouts distribution
             </Typography>
         </Stack>
-        <WorkoutPieChart/>
+
+        <WorkoutPieChart setWorkoutType={setWorkoutType} setWorkoutModal={setWorkoutModal}/>
 
         <AddWorkoutPopUp
             workoutModal={workoutModal}
             setWorkoutModal={setWorkoutModal}
             hourInterval={hourInterval}
+            workoutType={workoutType}
             refreshData={setRefreshData}
         />
     </Fragment>

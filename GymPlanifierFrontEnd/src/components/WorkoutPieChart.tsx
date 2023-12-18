@@ -1,19 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Cell, Pie, PieChart} from 'recharts';
+import {Cell, Legend, Pie, PieChart, Tooltip} from 'recharts';
 import axios from "../api/axios.ts";
 
-
-export default function WorkoutPieChart() {
+export default function WorkoutPieChart(props: {setWorkoutType: Function, setWorkoutModal: Function}) {
     const [workoutData, setWorkoutData] = useState(null)
     const [workoutChartData, setWorkoutChartData] = useState<Array<any>>()
-
-
-    const data = [
-        {name: 'Group A', value: 400},
-        {name: 'Group B', value: 300},
-        {name: 'Group C', value: 300},
-        {name: 'Group D', value: 200},
-    ];
 
     const setChartData = (workoutData: any) => {
         let workoutArray = [];
@@ -53,6 +44,7 @@ export default function WorkoutPieChart() {
 
     return (
         <PieChart width={1600} height={800}>
+            <Legend verticalAlign="top" height={36}/>
             <Pie
                 data={workoutChartData}
                 cx="50%"
@@ -64,9 +56,13 @@ export default function WorkoutPieChart() {
                 dataKey="value"
             >
                 {workoutChartData?.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} onClick={() => {
+                      props.setWorkoutType(entry.name)
+                      props.setWorkoutModal(true)
+                    }}/>
                 ))}
             </Pie>
+          <Tooltip />
         </PieChart>
     );
 }
