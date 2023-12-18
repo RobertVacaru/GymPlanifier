@@ -77,4 +77,9 @@ class WorkoutController extends Controller
 //        $workouts = Workout::all()->where('date', '>=', date('Y-m-d').' 00:00:00');
         return $this->workoutService->getWorkoutsByIntervals();
     }
+
+    public function showByType(): array
+    {
+        return $this->workoutService->getWorkoutsByType();
+    }
 }

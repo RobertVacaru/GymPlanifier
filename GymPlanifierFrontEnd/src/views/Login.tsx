@@ -140,7 +140,7 @@ export default function Login()  {
                 />
               }
             >
-              Logo
+              Gym Planifier
             </Typography>
             <ColorSchemeToggle />
           </Box>
@@ -220,7 +220,7 @@ export default function Login()  {
           </Box>
           <Box component="footer" sx={{ py: 3 }}>
             <Typography level="body3" textAlign="center">
-              © Your company {new Date().getFullYear()}
+              © Gym Planifier {new Date().getFullYear()}
             </Typography>
           </Box>
         </Box>

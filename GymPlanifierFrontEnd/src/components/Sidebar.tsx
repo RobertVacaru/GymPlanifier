@@ -35,7 +35,7 @@ export default function Sidebar() {
   const {user, logout} = useAuthContext();
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
-  const [arrow, setArrow] = useState(true);
+  const [arrow, setArrow] = useState(false);
 
   return (
     <Sheet
@@ -122,7 +122,7 @@ export default function Sidebar() {
               </ListItemDecorator>
               <ListItemContent onClick={() => {
                 navigate('/')
-                setIndex(1)
+                setIndex(0)
               }}>Home</ListItemContent>
             </ListItemButton>
           </ListItem>

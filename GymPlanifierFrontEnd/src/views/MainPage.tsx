@@ -3,7 +3,10 @@ import {BarChart, Bar, CartesianGrid, Legend, Tooltip, XAxis, YAxis, ResponsiveC
 import HeaderPage from "../components/HeaderPage";
 import {Stack, Typography} from "@mui/joy";
 import AddWorkoutPopUp from "../components/PopUps/AddWorkoutPopUp";
+import WorkoutPieChart from "../components/WorkoutPieChart.tsx";
 import axios from "../api/axios.ts";
+import { Row } from "react-bootstrap";
+import Divider from "@mui/joy/Divider";
 
 export default function MainPage() {
   const [workoutModal, setWorkoutModal] = useState<boolean>(false)
@@ -91,7 +94,6 @@ export default function MainPage() {
             Workouts distribution over hours
           </Typography>
       </Stack>
-      <ResponsiveContainer width={1600} height={500}>
         <BarChart width={1600} height={500} data={chartData} key={`rc_${chartData}`}>
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="name"/>
@@ -104,14 +106,33 @@ export default function MainPage() {
           }}/>
           <Bar dataKey="People that scheduled their workouts for today" fill="#82ca9d"/>
         </BarChart>
-      </ResponsiveContainer>
+        <Divider />
 
-      <AddWorkoutPopUp
-        workoutModal={workoutModal}
-        setWorkoutModal={setWorkoutModal}
-        hourInterval={hourInterval}
-        refreshData={setRefreshData}
-      />
+        <Stack
+            direction={{
+                xs: 'column',
+                sm: 'row',
+            }}
+            justifyContent="center"
+        >
+            <Typography
+                level="h1"
+                fontSize={{
+                    xs: 'xl2',
+                    md: 'xl4',
+                }}
+            >
+                Type of workouts distribution
+            </Typography>
+        </Stack>
+        <WorkoutPieChart/>
+
+        <AddWorkoutPopUp
+            workoutModal={workoutModal}
+            setWorkoutModal={setWorkoutModal}
+            hourInterval={hourInterval}
+            refreshData={setRefreshData}
+        />
     </Fragment>
   )
 }

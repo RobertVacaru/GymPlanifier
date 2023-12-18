@@ -9,7 +9,7 @@ export default function MyWorkouts() {
 
   return(
     <Fragment>
-      <HeaderPage headerText={'Today\'s gym scheduled workouts charts'} headerSmallText={'Input your preferred workout and time availability'}/>
+      <HeaderPage headerText={'History of workouts'} headerSmallText={'Adjust workouts based on preference'}/>
       <WorkoutsTable workoutPopUp={workoutPopUp} setWorkoutPopUp={setWorkoutPopUp} workoutId={workoutId} setWorkoutId={setWorkoutId}/>
       <AddWorkoutPopUp workoutModal={workoutPopUp} setWorkoutModal={setWorkoutPopUp} workoutId={workoutId}/>
     </Fragment>

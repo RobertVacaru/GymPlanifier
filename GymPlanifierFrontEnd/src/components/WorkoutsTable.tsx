@@ -279,10 +279,7 @@ export default function WorkoutsTable(props: PropsWorkout) {
                 </Box>
               </td>
               <td>
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <Link level="body-xs" component="button">
-                    Download
-                  </Link>
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', float: 'right'}}>
                   <Dropdown>
                     <MenuButton
                       slots={{ root: IconButton }}
