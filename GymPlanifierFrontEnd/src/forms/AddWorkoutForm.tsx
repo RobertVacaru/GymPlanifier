@@ -122,12 +122,12 @@ export default function AddWorkoutForm(props?: Workout) {
         <Form.Group controlId="formSelect" className={"form-group"}>
           <FormLabel className={"label"}>Input your preferred workout type</FormLabel>
           <Controller
-            name="type"
+            name="workoutType"
             control={control}
             render={(field: { onChange, onBlur, value }) => (
               <Select
                 onChange={(e) => {
-                  setValue('type', e?.target?.outerText)
+                  setValue('workoutType', e?.target?.outerText)
                 }}
                 defaultValue={props?.workoutType ?? field.value}
               >
