@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+/// <reference types="vite-plugin-svgr/client" /
 import * as React from 'react';
 import {styled} from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
@@ -19,6 +20,7 @@ import useAuthContext from "../contexts/AuthContext";
 import {useNavigate} from "react-router";
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import Logo from "../assets/workoutTypeIcons/logo.svg";
 
 const Dropdown = styled('i')(({theme}) => ({
   color: theme.vars.palette.text.tertiary,
@@ -94,7 +96,7 @@ export default function Sidebar() {
         onClick={() => closeSidebar()}
       />
       <Box sx={{display: 'flex', gap: 1, alignItems: 'center'}}>
-        {/*<MuiLogo />*/}
+        <img src={Logo} className="w-12 inline-block" alt="logo" style={{width: '30px', height: '30px'}}/>
         <Typography fontWeight="xl">Gym Planifier</Typography>
         <ColorSchemeToggle sx={{ml: 'auto'}}/>
       </Box>

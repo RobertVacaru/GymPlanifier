@@ -16,6 +16,7 @@ import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import customTheme from '../theme.ts';
 import useAuthContext from "../contexts/AuthContext.tsx";
 import {useNavigate} from "react-router";
+import Logo from "../assets/workoutTypeIcons/logo.svg";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -130,14 +131,11 @@ export default function Login()  {
                   sx={{
                     width: 24,
                     height: 24,
-                    background: (theme: any) =>
-                      `linear-gradient(45deg, ${theme.vars.palette.primary.solidBg}, ${theme.vars.palette.primary.solidBg} 30%, ${theme.vars.palette.primary.softBg})`,
-                    borderRadius: '50%',
-                    boxShadow: (theme: any) => theme.shadow.md,
-                    '--joy-shadowChannel': (theme: any) =>
-                      theme.vars.palette.primary.mainChannel,
+                    borderRadius: '50%'
                   }}
-                />
+                >
+                  <img src={Logo} alt="logo" style={{width: '24px', height: '24px', marginBottom: '1rem'}}/>
+                </Box>
               }
             >
               Gym Planifier
