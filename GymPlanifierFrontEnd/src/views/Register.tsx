@@ -14,6 +14,8 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import customTheme from '../theme.ts';
 import useAuthContext from "../contexts/AuthContext.tsx";
+import Logo from "../assets/workoutTypeIcons/logo.svg";
+import {useNavigate} from "react-router";
 
 interface FormElements extends HTMLFormControlsCollection {
   name: HTMLInputElement;
@@ -29,12 +31,15 @@ interface SignInFormElement extends HTMLFormElement {
 function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
+
   React.useEffect(() => {
     setMounted(true);
   }, []);
+
   if (!mounted) {
     return <IconButton size="sm" variant="plain" color="neutral" disabled />;
   }
+
   return (
     <IconButton
       id="toggle-mode"
@@ -63,6 +68,7 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
 export default function Register()  {
   //@ts-ignore
   const {register, errors} = useAuthContext();
+  const navigate = useNavigate();
   const handleRegister = async (data: object) => {
     register(data);
   }
@@ -129,17 +135,14 @@ export default function Register()  {
                   sx={{
                     width: 24,
                     height: 24,
-                    background: (theme: any) =>
-                      `linear-gradient(45deg, ${theme.vars.palette.primary.solidBg}, ${theme.vars.palette.primary.solidBg} 30%, ${theme.vars.palette.primary.softBg})`,
-                    borderRadius: '50%',
-                    boxShadow: (theme: any) => theme.shadow.md,
-                    '--joy-shadowChannel': (theme: any) =>
-                      theme.vars.palette.primary.mainChannel,
+                    borderRadius: '50%'
                   }}
-                />
+                >
+                  <img src={Logo} alt="logo" style={{width: '24px', height: '24px', marginBottom: '1rem'}}/>
+                </Box>
               }
             >
-              Logo
+              Gym Planifier
             </Typography>
             <ColorSchemeToggle />
           </Box>
@@ -214,11 +217,19 @@ export default function Register()  {
               <Button type="submit" fullWidth>
                 Register
               </Button>
+              <Button
+                variant="outlined"
+                color="neutral"
+                fullWidth
+                onClick={() => navigate('/login')}
+              >
+                Back to the login page
+              </Button>
             </form>
           </Box>
           <Box component="footer" sx={{ py: 3 }}>
             <Typography level="body3" textAlign="center">
-              © Your company {new Date().getFullYear()}
+              © Gym Planifier {new Date().getFullYear()}
             </Typography>
           </Box>
         </Box>
@@ -239,10 +250,10 @@ export default function Register()  {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundImage:
-            'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
+            'url(https://previews.123rf.com/images/rh2010/rh20101811/rh2010181100094/129898099-close-up-of-a-stand-full-of-dumbbells-at-the-white-gym-interior.jpg)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
-              'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
+              'url(https://images.squarespace-cdn.com/content/v1/6088bf84f6460a6aaca60f42/1623041285038-QBNX9Q69SXAUBY8JVMCN/610_9576.jpg)',
           },
         })}
       />
