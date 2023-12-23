@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessStatistics;
 use App\Models\Workout;
 use App\Services\WorkoutService;
 use Illuminate\Http\Request;
@@ -56,6 +57,8 @@ class WorkoutController extends Controller
             $workout->owner_id = \Auth::user()['id'];
             $workout->description = $request->get('description');
             $workout->save();
+
+            ProcessStatistics::dispatch(\Auth::user());
 
             return response()->json([
                 'status' => 'success',
