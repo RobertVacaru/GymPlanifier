@@ -6,6 +6,7 @@ import DefaultLayout from "./components/DefaultLayout.tsx";
 import GuestLayout from "./components/GuestLayout.tsx";
 import MyWorkouts from "./views/MyWorkouts.tsx";
 import AddWorkout from "./views/AddWorkout.tsx";
+import Statistics from "./views/Statistics.tsx";
 
 function App() {
 
@@ -20,6 +21,9 @@ function App() {
         </Route>
         <Route element={<DefaultLayout/>}>
           <Route path="/addWorkout" element={<AddWorkout/>}/>
+        </Route>
+        <Route element={<DefaultLayout/>}>
+          <Route path="/statistics" element={<Statistics/>}/>
         </Route>
         <Route element={<GuestLayout/>}>
           <Route path="/login" element={<Login/>}/>

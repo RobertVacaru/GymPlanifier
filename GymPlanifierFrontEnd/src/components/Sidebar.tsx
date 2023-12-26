@@ -150,16 +150,27 @@ export default function Sidebar() {
               }}>Add Workout</ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItemButton selected={index === 2} onClick={() => {
-            setIndex(2)
-            setArrow(!arrow)
-          }}>
-            <ListItemDecorator>
-              <i data-feather="bar-chart-2"/>
-            </ListItemDecorator>
-            <ListItemContent>Users</ListItemContent>
-            {arrow ? <ExpandLess/> : <ExpandMore/>}
-          </ListItemButton>
+          <ListItem>
+            <ListItemButton selected={index === 7}>
+              <ListItemDecorator>
+                <i data-feather="bar-chart-2"/>
+              </ListItemDecorator>
+              <ListItemContent onClick={() => {
+                navigate('/statistics')
+                setIndex(7)
+              }}>Statistics</ListItemContent>
+            </ListItemButton>
+          </ListItem>
+          {/*<ListItemButton selected={index === 2} onClick={() => {*/}
+          {/*  setIndex(2)*/}
+          {/*  setArrow(!arrow)*/}
+          {/*}}>*/}
+          {/*  <ListItemDecorator>*/}
+          {/*    <i data-feather="bar-chart-2"/>*/}
+          {/*  </ListItemDecorator>*/}
+          {/*  <ListItemContent>Users</ListItemContent>*/}
+          {/*  {arrow ? <ExpandLess/> : <ExpandMore/>}*/}
+          {/*</ListItemButton>*/}
           <ListItem nested>
           {arrow &&
             <List>
