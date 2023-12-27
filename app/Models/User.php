@@ -52,6 +52,6 @@ class User extends Authenticatable
 
     public function statistics(): HasOne
     {
-        return  $this->hasOne(Statistics::class, 'owner_id');
+        return  $this->hasOne(Statistics::class, 'parent_id');
     }
 }

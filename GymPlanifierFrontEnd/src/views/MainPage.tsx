@@ -105,7 +105,10 @@ export default function MainPage() {
             setWorkoutModal(true)
             setHourInterval(val.name)
           }}/>
-          <Bar dataKey="People that scheduled their workouts for today" fill="#82ca9d"/>
+          <Bar dataKey="People that scheduled their workouts for today" fill="#82ca9d" onClick={(val) => {
+            setWorkoutModal(true)
+            setHourInterval(val.name)
+          }}/>
         </BarChart>
         <Divider />
 

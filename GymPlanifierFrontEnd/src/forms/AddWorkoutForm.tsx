@@ -25,7 +25,7 @@ export default function AddWorkoutForm(props?: Workout) {
     return `${Math.floor(value)}:${((value - Math.floor(value)) * 60) !== 0 ? (value - Math.floor(value)) * 60 : '00'}`
   }
 
-  const workouts = [{value: 1, label: 'Back'}, {value: 2, label: 'Chest'}];
+  const workouts = [{value: 1, label: 'Back'}, {value: 2, label: 'Chest'}, {value: 3, label: 'Legs'}, {value: 4, label: 'Shoulders'}, {value: 5, label: 'Cardio'}];
   const [marks, setMarks] = useState([{value: 10, label: valueText(10)}, {value: 12, label: valueText(12)}]);
   const [workoutData, setWorkoutData] = useState(null)
   const [hourInterval, setHourInterval] = useState<Array<number>>([10,12])

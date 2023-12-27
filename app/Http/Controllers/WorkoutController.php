@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessStatistics;
+use App\Models\Statistics;
 use App\Models\Workout;
+use App\Services\StatisticsService;
 use App\Services\WorkoutService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -15,6 +17,7 @@ class WorkoutController extends Controller
 {
     public function __construct(
         protected WorkoutService $workoutService,
+        protected StatisticsService $statisticsService
     ){}
 
     public function index(): Collection
@@ -84,5 +87,10 @@ class WorkoutController extends Controller
     public function showByType(): array
     {
         return $this->workoutService->getWorkoutsByType();
+    }
+
+    public function statistics(): array
+    {
+        return $this->statisticsService->getStatisticsForChart();
     }
 }

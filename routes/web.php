@@ -27,4 +27,6 @@ Route::post('/workouts/{uniqueId}/add',[WorkoutController::class, 'store']);
 Route::get('/workoutsToday',[WorkoutController::class, 'showByDay']);
 Route::get('/workoutsToday/type',[WorkoutController::class, 'showByType']);
 
+Route::get('statistics', [WorkoutController::class, 'statistics']);
+
 require __DIR__.'/auth.php';

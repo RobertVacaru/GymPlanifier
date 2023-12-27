@@ -24,13 +24,13 @@ class Statistics extends Model
         'preferredFinishingHour'
     ];
 
-    public function owner(): BelongsTo
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     public function dailyStatistics(): HasMany
     {
-        return $this->hasMany(DailyStatistics::class, 'parentId');
+        return $this->hasMany(DailyStatistics::class, 'parent_id');
     }
 }
