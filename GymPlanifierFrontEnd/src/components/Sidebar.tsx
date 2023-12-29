@@ -7,7 +7,6 @@ import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
-import Input from '@mui/joy/Input';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
@@ -18,8 +17,6 @@ import Sheet from '@mui/joy/Sheet';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import useAuthContext from "../contexts/AuthContext";
 import {useNavigate} from "react-router";
-import {useState} from "react";
-import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import Logo from "../assets/workoutTypeIcons/logo.svg";
 
 const Dropdown = styled('i')(({theme}) => ({
@@ -36,8 +33,6 @@ const closeSidebar = () => {
 export default function Sidebar() {
   const {user, logout} = useAuthContext();
   const navigate = useNavigate();
-  const [index, setIndex] = useState(0);
-  const [arrow, setArrow] = useState(false);
 
   return (
     <Sheet
@@ -118,46 +113,52 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
-            <ListItemButton selected={index === 0}>
+            <ListItemButton selected={window.location.pathname === '/'}>
               <ListItemDecorator>
                 <i data-feather="home"/>
               </ListItemDecorator>
               <ListItemContent onClick={() => {
                 navigate('/')
-                setIndex(0)
               }}>Home</ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton selected={index === 1}>
+            <ListItemButton selected={window.location.pathname === '/dailyWorkouts'}>
               <ListItemDecorator>
                 <i data-feather="layers"/>
               </ListItemDecorator>
               <ListItemContent onClick={() => {
+                navigate('/dailyWorkouts')
+              }}>Daily Workouts</ListItemContent>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton selected={window.location.pathname === '/myWorkouts'}>
+              <ListItemDecorator>
+                <i data-feather="list"/>
+              </ListItemDecorator>
+              <ListItemContent onClick={() => {
                 navigate('/myWorkouts')
-                setIndex(1)
               }}>My Workouts</ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton selected={index === 6}>
+            <ListItemButton selected={window.location.pathname === '/addWorkout'}>
               <ListItemDecorator>
                 <i data-feather="plus"/>
               </ListItemDecorator>
               <ListItemContent onClick={() => {
                 navigate('/addWorkout')
-                setIndex(6)
               }}>Add Workout</ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton selected={index === 7}>
+            <ListItemButton selected={window.location.pathname === '/statistics'}>
               <ListItemDecorator>
                 <i data-feather="bar-chart-2"/>
               </ListItemDecorator>
               <ListItemContent onClick={() => {
                 navigate('/statistics')
-                setIndex(7)
               }}>Statistics</ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -171,28 +172,28 @@ export default function Sidebar() {
           {/*  <ListItemContent>Users</ListItemContent>*/}
           {/*  {arrow ? <ExpandLess/> : <ExpandMore/>}*/}
           {/*</ListItemButton>*/}
-          <ListItem nested>
-          {arrow &&
-            <List>
-              <ListItem>
-                <ListItemButton selected={index === 3} color={index === 3 ? "primary" : undefined} onClick={() => {
-                  setIndex(3)
-                }}>
-                  My Profile
-                </ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemButton selected={index === 4} color={index === 4 ? "primary" : undefined} onClick={() => {
-                  setIndex(4)
-                }}>New user</ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemButton selected={index === 5} color={index === 5 ? "primary" : undefined} onClick={() => {
-                  setIndex(5)
-                }}>Role & Permission</ListItemButton>
-              </ListItem>
-            </List>}
-          </ListItem>
+          {/*<ListItem nested>*/}
+          {/*{arrow &&*/}
+          {/*  <List>*/}
+          {/*    <ListItem>*/}
+          {/*      <ListItemButton selected={index === 3} color={index === 3 ? "primary" : undefined} onClick={() => {*/}
+          {/*        setIndex(3)*/}
+          {/*      }}>*/}
+          {/*        My Profile*/}
+          {/*      </ListItemButton>*/}
+          {/*    </ListItem>*/}
+          {/*    <ListItem>*/}
+          {/*      <ListItemButton selected={index === 4} color={index === 4 ? "primary" : undefined} onClick={() => {*/}
+          {/*        setIndex(4)*/}
+          {/*      }}>New user</ListItemButton>*/}
+          {/*    </ListItem>*/}
+          {/*    <ListItem>*/}
+          {/*      <ListItemButton selected={index === 5} color={index === 5 ? "primary" : undefined} onClick={() => {*/}
+          {/*        setIndex(5)*/}
+          {/*      }}>Role & Permission</ListItemButton>*/}
+          {/*    </ListItem>*/}
+          {/*  </List>}*/}
+          {/*</ListItem>*/}
         </List>
         <List
           sx={{

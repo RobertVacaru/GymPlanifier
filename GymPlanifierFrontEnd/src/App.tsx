@@ -1,5 +1,5 @@
 import {Route, Routes} from "react-router-dom";
-import MainPage from "./views/MainPage.tsx";
+import DailyWorkouts from "./views/DailyWorkouts.tsx";
 import Login from "./views/Login.tsx";
 import Register from "./views/Register.tsx";
 import DefaultLayout from "./components/DefaultLayout.tsx";
@@ -7,6 +7,7 @@ import GuestLayout from "./components/GuestLayout.tsx";
 import MyWorkouts from "./views/MyWorkouts.tsx";
 import AddWorkout from "./views/AddWorkout.tsx";
 import Statistics from "./views/Statistics.tsx";
+import MainPage from "./views/MainPage.tsx";
 
 function App() {
 
@@ -15,6 +16,9 @@ function App() {
       <Routes>
         <Route element={<DefaultLayout/>}>
           <Route path="/" element={<MainPage/>}/>
+        </Route>
+        <Route element={<DefaultLayout/>}>
+          <Route path="/dailyWorkouts" element={<DailyWorkouts/>}/>
         </Route>
         <Route element={<DefaultLayout/>}>
           <Route path="/myWorkouts" element={<MyWorkouts/>}/>

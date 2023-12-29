@@ -1,83 +1,19 @@
-import {Fragment, useEffect, useState} from "react";
-import {BarChart, Bar, CartesianGrid, Legend, Tooltip, XAxis, YAxis, ResponsiveContainer} from "recharts";
-import HeaderPage from "../components/HeaderPage";
-import {Stack, Typography} from "@mui/joy";
-import AddWorkoutPopUp from "../components/PopUps/AddWorkoutPopUp";
-import WorkoutPieChart from "../components/WorkoutPieChart.tsx";
-import axios from "../api/axios.ts";
-import { Row } from "react-bootstrap";
+import {Fragment} from 'react';
+import Box from '@mui/joy/Box';
+import Button from '@mui/joy/Button';
+import Card from '@mui/joy/Card';
+import CardContent from '@mui/joy/CardContent';
+import CardActions from '@mui/joy/CardActions';
+import Typography from '@mui/joy/Typography';
+import {Stack} from "@mui/joy";
+import {useNavigate} from "react-router";
+import {Layers, List, Plus, BarChart2} from "react-feather";
 import Divider from "@mui/joy/Divider";
 
 export default function MainPage() {
-  const [workoutModal, setWorkoutModal] = useState<boolean>(false)
-  const [workouts, setWorkouts] = useState(null)
-  const [chartData, setChartData] = useState<Array<any>>()
-  const [hourInterval, setHourInterval] = useState('')
-  const [workoutType, setWorkoutType] = useState('')
-  const [refreshData, setRefreshData] = useState<boolean|null>()
-
-  const getWorkoutForToday = async () => {
-    await axios.get('/workoutsToday').then((response) => {
-      setChartData(getChartData(response.data))
-      setWorkouts(response.data)
-    });
-  }
-
-  useEffect(()=>{
-    if(workouts === null){
-      getWorkoutForToday()
-    }
-  }, [workouts])
-
-    useEffect(() => {
-        if(refreshData === true){
-            getWorkoutForToday().then(() => {
-                setRefreshData(false)
-            })
-        }
-    }, [refreshData]);
-
-  const getChartData = (workouts: { [x: string]: string | any[]; }) => [
-      {
-        "name": "8:00-10:00",
-        "People that scheduled their workouts for today":  workouts['8:00']?.length,
-        "Average people working out at that hour": 5
-      },
-      {
-        "name": "10:00-12:00",
-        "People that scheduled their workouts for today": workouts['10:00']?.length,
-        "Average people working out at that hour": 3
-      },
-      {
-        "name": "12:00-14:00",
-        "People that scheduled their workouts for today": workouts['12:00']?.length,
-        "Average people working out at that hour": 9
-      },
-      {
-        "name": "14:00-16:00",
-        "People that scheduled their workouts for today": workouts['14:00']?.length,
-        "Average people working out at that hour": 3
-      },
-      {
-        "name": "16:00-18:00",
-        "People that scheduled their workouts for today": workouts['16:00']?.length,
-        "Average people working out at that hour": 4
-      },
-      {
-        "name": "18:00-20:00",
-        "People that scheduled their workouts for today": workouts['18:00']?.length,
-        "Average people working out at that hour": 3
-      },
-      {
-        "name": "20:00-22:00",
-        "People that scheduled their workouts for today": workouts['20:00']?.length,
-        "Average people working out at that hour": 4
-      }
-    ]
-
+  const navigate = useNavigate();
   return (
     <Fragment>
-      <HeaderPage headerText={'Today\'s gym scheduled workouts charts'} headerSmallText={'Input your preferred workout and time availability'}/>
       <Stack
         direction={{
           xs: 'column',
@@ -85,60 +21,156 @@ export default function MainPage() {
         }}
         justifyContent="center"
       >
-          <Typography
-            level="h1"
-            fontSize={{
-              xs: 'xl2',
-              md: 'xl4',
+        <Typography
+          level="h1"
+          fontSize={{
+            xs: 'xl2',
+            md: 'xl4',
+          }}
+        >
+          Home page
+        </Typography>
+      </Stack>
+      <Stack
+        direction={{
+          xs: 'column',
+          sm: 'row',
+        }}
+        justifyContent="center"
+      >
+        <Typography
+          level="h4"
+          textColor="neutral.500"
+        >
+          Below you can navigate through the application using the given cards
+        </Typography>
+      </Stack>
+      <Divider/>
+      <Stack spacing={{xs: 1, sm: 4}} direction="row" flexWrap="wrap" useFlexGap justifyContent="center" mt={16}>
+        <Card
+          variant="outlined"
+          sx={{
+            width: 320,
+            // to make the card resizable
+            overflow: 'auto',
+            resize: 'horizontal',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
-            Workouts distribution over hours
-          </Typography>
-      </Stack>
-        <BarChart width={1600} height={500} data={chartData} key={`rc_${chartData}`}>
-          <CartesianGrid strokeDasharray="3 3"/>
-          <XAxis dataKey="name"/>
-          <YAxis domain={[0,30]}/>
-          <Tooltip/>
-          <Legend/>
-          <Bar dataKey="Average people working out at that hour" fill="#8884d8" onClick={(val) => {
-            setWorkoutModal(true)
-            setHourInterval(val.name)
-          }}/>
-          <Bar dataKey="People that scheduled their workouts for today" fill="#82ca9d" onClick={(val) => {
-            setWorkoutModal(true)
-            setHourInterval(val.name)
-          }}/>
-        </BarChart>
-        <Divider />
-
-        <Stack
-            direction={{
-                xs: 'column',
-                sm: 'row',
-            }}
-            justifyContent="center"
-        >
-            <Typography
-                level="h1"
-                fontSize={{
-                    xs: 'xl2',
-                    md: 'xl4',
-                }}
-            >
-                Type of workouts distribution
+            <Layers className="text-primary" style={{width: "48px" ,height: "48px", color: "blue"}} />
+          </Box>
+          <CardContent>
+            <Typography level="title-lg">Daily Workouts</Typography>
+            <Typography level="body-sm">
+              Here you can navigate through the workouts that are scheduled by the users today and also log your own workout
             </Typography>
-        </Stack>
-
-        <WorkoutPieChart setWorkoutType={setWorkoutType} setWorkoutModal={setWorkoutModal}/>
-
-        <AddWorkoutPopUp
-            workoutModal={workoutModal}
-            setWorkoutModal={setWorkoutModal}
-            hourInterval={hourInterval}
-            workoutType={workoutType}
-            refreshData={setRefreshData}
-        />
+          </CardContent>
+          <CardActions buttonFlex="0 1 120px">
+            <Button variant="outlined" color="neutral" onClick={() => navigate('/dailyWorkouts')}>
+              View
+            </Button>
+          </CardActions>
+        </Card>
+        <Card
+          variant="outlined"
+          sx={{
+            width: 320,
+            // to make the card resizable
+            overflow: 'auto',
+            resize: 'horizontal',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <List className="text-primary" style={{width: "48px" ,height: "48px", color: "blue"}} />
+          </Box>
+          <CardContent>
+            <Typography level="title-lg">My workouts</Typography>
+            <Typography level="body-sm">
+              Here you can navigate through all of your workouts.
+              You can also edit or delete the workouts.
+            </Typography>
+          </CardContent>
+          <CardActions buttonFlex="0 1 120px">
+            <Button variant="outlined" color="neutral" onClick={() => navigate('/myWorkouts')}>
+              View
+            </Button>
+          </CardActions>
+        </Card>
+      </Stack>
+      <Stack spacing={{xs: 1, sm: 4}} direction="row" flexWrap="wrap" useFlexGap justifyContent="center" mt={4}>
+        <Card
+          variant="outlined"
+          sx={{
+            width: 320,
+            // to make the card resizable
+            overflow: 'auto',
+            resize: 'horizontal',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Plus className="text-primary" style={{width: "48px" ,height: "48px", color: "blue"}} />
+          </Box>
+          <CardContent>
+            <Typography level="title-lg">Add Workout</Typography>
+            <Typography level="body-sm">
+              Here you can add a workout for today or the upcoming days
+            </Typography>
+          </CardContent>
+          <CardActions buttonFlex="0 1 120px">
+            <Button variant="outlined" color="neutral" onClick={() => navigate('/addWorkout')}>
+              View
+            </Button>
+          </CardActions>
+        </Card>
+        <Card
+          variant="outlined"
+          sx={{
+            width: 320,
+            // to make the card resizable
+            overflow: 'auto',
+            resize: 'horizontal',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <BarChart2 className="text-primary" style={{width: "48px" ,height: "48px", color: "blue"}} />
+          </Box>
+          <CardContent>
+            <Typography level="title-lg">Statistics</Typography>
+            <Typography level="body-sm">
+              Here you can navigate through a bunch of statistics based on the workouts that you have done in the past.
+            </Typography>
+          </CardContent>
+          <CardActions buttonFlex="0 1 120px">
+            <Button variant="outlined" color="neutral" onClick={() => navigate('/statistics')}>
+              View
+            </Button>
+          </CardActions>
+        </Card>
+      </Stack>
     </Fragment>
-  )
+  );
 }
