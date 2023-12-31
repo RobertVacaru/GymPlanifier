@@ -71,10 +71,14 @@ class StatisticsService
         }
     }
 
-    public function getStatisticsForChart(): array
+    public function getStatisticsForChart(bool $allUsers): array
     {
-        $statistics = \Auth::user()->statistics;
-        $statistics = $statistics->dailyStatistics;
+        if ($allUsers) {
+            $statistics = DailyStatistics::all();
+        } else {
+            $statistics = \Auth::user()->statistics;
+            $statistics = $statistics->dailyStatistics;
+        }
 
         $data = [];
         foreach ($statistics as $statistic) {

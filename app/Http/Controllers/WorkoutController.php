@@ -89,8 +89,8 @@ class WorkoutController extends Controller
         return $this->workoutService->getWorkoutsByType();
     }
 
-    public function statistics(): array
+    public function statistics(Request $request): array
     {
-        return $this->statisticsService->getStatisticsForChart();
+        return $this->statisticsService->getStatisticsForChart($request->get('allUsers'));
     }
 }

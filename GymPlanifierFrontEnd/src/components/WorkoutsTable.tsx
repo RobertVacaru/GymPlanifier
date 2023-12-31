@@ -49,8 +49,8 @@ export default function WorkoutsTable(props: PropsWorkout) {
   const [workoutData, setWorkoutData] = useState<WorkoutInterface[]|null>(null);
   const {user} = useAuthContext();
 
-  const getOwnerWorkoutData = async (page: number = 1) => {
-    await axios.get('/workouts/'+ user.id +'/ownedByUser', {params: {page: page}}).then((response) => {
+  const getOwnerWorkoutData = async (page: number = 1, status: string = '') => {
+    await axios.get('/workouts/'+ user.id +'/ownedByUser', {params: {page: page, status: status}}).then((response) => {
       console.log(response.data)
       setWorkoutData(response.data.data)
     });
@@ -110,25 +110,12 @@ export default function WorkoutsTable(props: PropsWorkout) {
       </FormControl>
 
       <FormControl size="sm">
-        <FormLabel>Category</FormLabel>
+        <FormLabel>Workout Type</FormLabel>
         <Select size="sm" placeholder="All">
           <Option value="all">All</Option>
           <Option value="refund">Refund</Option>
           <Option value="purchase">Purchase</Option>
           <Option value="debit">Debit</Option>
-        </Select>
-      </FormControl>
-
-      <FormControl size="sm">
-        <FormLabel>Customer</FormLabel>
-        <Select size="sm" placeholder="All">
-          <Option value="all">All</Option>
-          <Option value="olivia">Olivia Rhye</Option>
-          <Option value="steve">Steve Hampton</Option>
-          <Option value="ciaran">Ciaran Murray</Option>
-          <Option value="marina">Marina Macdonald</Option>
-          <Option value="charles">Charles Fulton</Option>
-          <Option value="jay">Jay Hoper</Option>
         </Select>
       </FormControl>
     </React.Fragment>
@@ -185,7 +172,7 @@ export default function WorkoutsTable(props: PropsWorkout) {
             xs: 'none',
             sm: 'flex',
           },
-          flexWrap: 'wrap',
+          justifyContent: 'flex-end',
           gap: 1.5,
           '& > *': {
             minWidth: {
@@ -195,10 +182,6 @@ export default function WorkoutsTable(props: PropsWorkout) {
           },
         }}
       >
-        <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for order</FormLabel>
-          <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
-        </FormControl>
         {renderFilters()}
       </Box>
       <Sheet
@@ -292,8 +275,6 @@ export default function WorkoutsTable(props: PropsWorkout) {
                         props.setWorkoutPopUp(true)
                         props.setWorkoutId(workout.id)
                       }}>Edit</MenuItem>
-                      <MenuItem>Rename</MenuItem>
-                      <MenuItem>Move</MenuItem>
                       <Divider />
                       <MenuItem color="danger">Delete</MenuItem>
                     </Menu>
