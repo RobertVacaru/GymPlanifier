@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Workout
+ *
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
 class Workout extends Model
 {
     use HasFactory;

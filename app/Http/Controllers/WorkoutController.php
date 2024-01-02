@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\ProcessStatistics;
 use App\Models\Statistics;
 use App\Models\Workout;
+use App\Repositories\WorkoutRepository;
 use App\Services\StatisticsService;
 use App\Services\WorkoutService;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class WorkoutController extends Controller
 {
     public function __construct(
         protected WorkoutService $workoutService,
-        protected StatisticsService $statisticsService
+        protected StatisticsService $statisticsService,
+        protected WorkoutRepository $workoutRepository
     ){}
 
     public function index(): Collection
@@ -33,7 +35,9 @@ class WorkoutController extends Controller
     public function owned(string $id, Request $request): LengthAwarePaginator
     {
         $page = $request->get('page');
-        return DB::table('workouts')->where('owner_id', $id)->paginate(15, page: $page);
+        $workoutTypeFilter= $request->get('workoutTypeFilter');
+        $statusFilter = $request->get('statusFilter');
+        return $this->workoutRepository->getOwnerWorkouts($id, $page, $workoutTypeFilter, $statusFilter);
     }
 
     public function showName(string $id): string

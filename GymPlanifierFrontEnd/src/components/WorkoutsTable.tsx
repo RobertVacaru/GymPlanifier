@@ -47,11 +47,20 @@ interface PropsWorkout {
 export default function WorkoutsTable(props: PropsWorkout) {
   const [open, setOpen] = React.useState(false);
   const [workoutData, setWorkoutData] = useState<WorkoutInterface[]|null>(null);
+  const [workoutTypeFilter, setWorkoutTypeFilter] = useState(null)
+  const [statusTypeFilter, setStatusTypeFilter] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
   const {user} = useAuthContext();
 
-  const getOwnerWorkoutData = async (page: number = 1, status: string = '') => {
-    await axios.get('/workouts/'+ user.id +'/ownedByUser', {params: {page: page, status: status}}).then((response) => {
-      console.log(response.data)
+  const getOwnerWorkoutData = async (page: number = 1, workoutTypeFilter: string = '', statusTypeFilter: string = '') => {
+    let params = {}
+    if(workoutTypeFilter || statusTypeFilter){
+      params = {params: {page: page, workoutTypeFilter: workoutTypeFilter ?? '', statusFilter: statusTypeFilter ?? ''}}
+    } else {
+      params = {params: {page: page}}
+    }
+    await axios.get('/workouts/'+ user.id +'/ownedByUser', params).then((response) => {
+      console.log(response)
       setWorkoutData(response.data.data)
     });
   }
@@ -101,21 +110,31 @@ export default function WorkoutsTable(props: PropsWorkout) {
           size="sm"
           placeholder="Filter by status"
           slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
+          onChange={(e) => {
+            setStatusTypeFilter(e?.target?.textContent)
+            getOwnerWorkoutData(currentPage, workoutTypeFilter ?? '', e?.target?.textContent)
+          }}
         >
-          <Option value="paid">Paid</Option>
-          <Option value="pending">Pending</Option>
-          <Option value="refunded">Refunded</Option>
-          <Option value="cancelled">Cancelled</Option>
+          <Option value="all">All</Option>
+          <Option value="finished">Finished</Option>
+          <Option value="toBeDone">To be done</Option>
+          <Option value="inProgress">In progress</Option>
         </Select>
       </FormControl>
 
       <FormControl size="sm">
         <FormLabel>Workout Type</FormLabel>
-        <Select size="sm" placeholder="All">
+        <Select size="sm" placeholder="All" onChange={(e) => {
+          setWorkoutTypeFilter(e?.target?.textContent)
+          getOwnerWorkoutData(currentPage, e?.target?.textContent, statusTypeFilter ?? '')
+        }}>
           <Option value="all">All</Option>
-          <Option value="refund">Refund</Option>
-          <Option value="purchase">Purchase</Option>
-          <Option value="debit">Debit</Option>
+          <Option value="back">Back</Option>
+          <Option value="chest">Chest</Option>
+          <Option value="legs">Legs</Option>
+          <Option value="shoulders">Shoulders</Option>
+          <Option value="cardio">Cardio</Option>
+          <Option value="arms">Arms</Option>
         </Select>
       </FormControl>
     </React.Fragment>
@@ -314,7 +333,11 @@ export default function WorkoutsTable(props: PropsWorkout) {
             size="sm"
             variant={Number(page) ? 'outlined' : 'plain'}
             color="neutral"
-            onClick={() => getOwnerWorkoutData(Number(page))}
+            onClick={() => {
+              setCurrentPage(Number(page))
+              getOwnerWorkoutData(Number(page))
+            }
+          }
           >
             {page}
           </IconButton>
