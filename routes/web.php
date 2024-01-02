@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\WorkoutController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,6 @@ Route::post('/workouts/{uniqueId}/add',[WorkoutController::class, 'store']);
 Route::get('/workoutsToday',[WorkoutController::class, 'showByDay']);
 Route::get('/workoutsToday/type',[WorkoutController::class, 'showByType']);
 
-Route::get('/statistics', [WorkoutController::class, 'statistics']);
+Route::get('/statistics', [StatisticsController::class, 'statistics']);
 
 require __DIR__.'/auth.php';
