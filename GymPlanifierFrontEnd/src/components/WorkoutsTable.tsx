@@ -229,30 +229,30 @@ export default function WorkoutsTable(props: PropsWorkout) {
         >
           <thead>
           <tr>
-            <th style={{ width: 140, padding: '12px 6px' }}>Date</th>
-            <th style={{ width: 140, padding: '12px 6px' }}>Workout Type</th>
-            <th style={{ width: 140, padding: '12px 6px' }}>Hour Interval</th>
-            <th style={{ width: 140, padding: '12px 6px' }}>Status</th>
-            <th style={{ width: 240, padding: '12px 6px' }}>User</th>
-            <th style={{ width: 140, padding: '12px 6px' }}> </th>
+            <th style={{ width: 250, padding: '12px 6px' }}><Typography level="body-md">Date</Typography></th>
+            <th style={{ width: 250, padding: '12px 6px' }}><Typography level="body-md">Workout Type</Typography></th>
+            <th style={{ width: 250, padding: '12px 6px' }}><Typography level="body-md">Hour </Typography></th>
+            <th style={{ width: 250, padding: '12px 6px' }}><Typography level="body-md">Status</Typography></th>
+            <th style={{ width: 200, padding: '12px 6px' }}><Typography level="body-md">User</Typography></th>
+            <th style={{ width: 100}}> </th>
           </tr>
           </thead>
           <tbody>
           {workoutData?.map((workout) => (
             <tr key={workout.id}>
               <td>
-                <Typography level="body-xs">{workout.date}</Typography>
+                <Typography level="body-md">{workout.date}</Typography>
               </td>
               <td>
-                <Typography level="body-xs">{workout.type}</Typography>
+                <Typography level="body-md">{workout.type}</Typography>
               </td>
               <td>
-                <Typography level="body-xs">{cleanHour(workout.startingHour) + ' - ' + cleanHour(workout.finishHour)}</Typography>
+                <Typography level="body-md">{cleanHour(workout.startingHour) + ' - ' + cleanHour(workout.finishHour)}</Typography>
               </td>
               <td>
                 <Chip
                   variant="soft"
-                  size="sm"
+                  size="md"
                   startDecorator={
                     {
                       "Finished": <CheckRoundedIcon />,
@@ -273,7 +273,7 @@ export default function WorkoutsTable(props: PropsWorkout) {
               </td>
               <td>
                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <Avatar size="sm">{user.name.slice(0,1).toUpperCase()}</Avatar>
+                  <Avatar size="md">{user.name.slice(0,1).toUpperCase()}</Avatar>
                   <div>
                     <Typography level="body-xs">{user.name}</Typography>
                     <Typography level="body-xs">{user.email}</Typography>

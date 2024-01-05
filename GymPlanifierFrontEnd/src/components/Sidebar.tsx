@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /// <reference types="vite-plugin-svgr/client" /
 import * as React from 'react';
-import {styled} from '@mui/joy/styles';
+import {styled, useColorScheme} from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -18,6 +18,7 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import useAuthContext from "../contexts/AuthContext";
 import {useNavigate} from "react-router";
 import Logo from "../assets/workoutTypeIcons/logo.svg";
+import DarkLogo from "../assets/workoutTypeIcons/DarkLogo.svg";
 
 const Dropdown = styled('i')(({theme}) => ({
   color: theme.vars.palette.text.tertiary,
@@ -33,6 +34,7 @@ const closeSidebar = () => {
 export default function Sidebar() {
   const {user, logout} = useAuthContext();
   const navigate = useNavigate();
+  const { mode, setMode } = useColorScheme();
 
   return (
     <Sheet
@@ -91,7 +93,7 @@ export default function Sidebar() {
         onClick={() => closeSidebar()}
       />
       <Box sx={{display: 'flex', gap: 1, alignItems: 'center'}}>
-        <img src={Logo} className="w-12 inline-block" alt="logo" style={{width: '30px', height: '30px'}}/>
+        <img src={mode === 'light' ? DarkLogo : Logo} className="w-12 inline-block" alt="logo" style={{width: '30px', height: '30px'}}/>
         <Typography fontWeight="xl">Gym Planifier</Typography>
         <ColorSchemeToggle sx={{ml: 'auto'}}/>
       </Box>

@@ -16,6 +16,7 @@ import customTheme from '../theme.ts';
 import useAuthContext from "../contexts/AuthContext.tsx";
 import Logo from "../assets/workoutTypeIcons/logo.svg";
 import {useNavigate} from "react-router";
+import DarkLogo from "../assets/workoutTypeIcons/DarkLogo.svg";
 
 interface FormElements extends HTMLFormControlsCollection {
   name: HTMLInputElement;
@@ -83,10 +84,10 @@ export default function Register()  {
       <GlobalStyles
         styles={{
           ':root': {
-            '--Collapsed-breakpoint': '769px', // form will stretch when viewport is below `769px`
-            '--Cover-width': '40vw', // must be `vw` only
+            '--Collapsed-breakpoint': '769px',
+            '--Cover-width': '40vw',
             '--Form-maxWidth': '700px',
-            '--Transition-duration': '0.4s', // set to `none` to disable transition
+            '--Transition-duration': '0.4s',
           },
         }}
       />
@@ -131,14 +132,17 @@ export default function Register()  {
               fontWeight="lg"
               startDecorator={
                 <Box
-                  component="span"
-                  sx={{
+                  component="img"
+                  sx={(theme) => ({
                     width: 24,
                     height: 24,
-                    borderRadius: '50%'
-                  }}
+                    borderRadius: '50%',
+                    content: `url(${Logo})`,
+                    [theme.getColorSchemeSelector('light')] : {
+                      content: `url(${DarkLogo})`
+                    }
+                  })}
                 >
-                  <img src={Logo} alt="logo" style={{width: '24px', height: '24px', marginBottom: '1rem'}}/>
                 </Box>
               }
             >

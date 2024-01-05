@@ -44,7 +44,7 @@ export default function WorkoutPieChart(props: {setWorkoutType: Function, setWor
 
     return (
         <PieChart width={1600} height={800}>
-            <Legend verticalAlign="top" height={36}/>
+            <Legend verticalAlign="top" iconSize={20} fontSize={30}/>
             <Pie
                 data={workoutChartData}
                 cx="50%"

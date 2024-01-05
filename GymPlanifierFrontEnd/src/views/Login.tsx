@@ -19,6 +19,8 @@ import {useNavigate} from "react-router";
 import Logo from "../assets/workoutTypeIcons/logo.svg";
 import BlackCover from "../assets/gym-black.jpg";
 import WhiteCover from "../assets/gym-white.jpg"
+import DarkLogo from "../assets/workoutTypeIcons/DarkLogo.svg";
+import {ThemeProvider} from "@mui/joy";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -129,14 +131,17 @@ export default function Login()  {
               fontWeight="lg"
               startDecorator={
                 <Box
-                  component="span"
-                  sx={{
+                  component="img"
+                  sx={(theme) => ({
                     width: 24,
                     height: 24,
-                    borderRadius: '50%'
-                  }}
+                    borderRadius: '50%',
+                    content: `url(${Logo})`,
+                    [theme.getColorSchemeSelector('light')] : {
+                      content: `url(${DarkLogo})`
+                    }
+                  })}
                 >
-                  <img src={Logo} alt="logo" style={{width: '24px', height: '24px', marginBottom: '1rem'}}/>
                 </Box>
               }
             >
