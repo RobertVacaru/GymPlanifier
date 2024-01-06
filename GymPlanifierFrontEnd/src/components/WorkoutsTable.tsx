@@ -80,26 +80,19 @@ export default function WorkoutsTable(props: PropsWorkout) {
   }
 
   const getStatus = (startingHour: number, finishHour: number, date: string) => {
-    const workoutDate: number = new Date(date).getDay()
-    let actualDate: Date|number = new Date()
-    const actualHour: number = actualDate.getHours()
-    actualDate = actualDate.getDay()
+    const workoutDate: number|string = new Date(date).toLocaleDateString()
 
-    if (workoutDate < actualDate) {
+    let actualDate: Date|number|string = new Date()
+    const actualHour: number = actualDate.getHours()
+    actualDate = actualDate.toLocaleDateString()
+
+    if (workoutDate < actualDate || (workoutDate === actualDate && actualHour > finishHour)) {
       return "Finished"
-    } else if (workoutDate > actualDate) {
+    } else if (workoutDate > actualDate || (workoutDate === actualDate && actualHour < startingHour)) {
       return "To be done"
     } else {
-      if (actualHour < finishHour && actualHour > startingHour) {
-        return "In progress"
-      } else if (actualHour > finishHour) {
-        return "Finished"
-      } else if (actualHour < startingHour) {
-        return "To be done"
-      }
+      return "In progress"
     }
-
-    return "Finished"
   }
 
   const renderFilters = () => (
@@ -322,6 +315,10 @@ export default function WorkoutsTable(props: PropsWorkout) {
           variant="outlined"
           color="neutral"
           startDecorator={<KeyboardArrowLeftIcon />}
+          onClick={() => {
+            setCurrentPage(currentPage - 1)
+            getOwnerWorkoutData(currentPage - 1)
+          }}
         >
           Previous
         </Button>
@@ -349,6 +346,10 @@ export default function WorkoutsTable(props: PropsWorkout) {
           variant="outlined"
           color="neutral"
           endDecorator={<KeyboardArrowRightIcon />}
+          onClick={() => {
+            setCurrentPage(currentPage + 1)
+            getOwnerWorkoutData(currentPage + 1)
+          }}
         >
           Next
         </Button>

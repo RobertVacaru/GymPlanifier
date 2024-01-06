@@ -45,6 +45,6 @@ class WorkoutRepository implements WorkoutRepositoryInterface
 
         }
 
-        return $result->paginate(15, page: $page);
+        return $result->orderBy('date','DESC')->paginate(15, page: $page);
     }
 }
