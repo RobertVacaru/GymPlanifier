@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Workout;
+use Illuminate\Support\Facades\Auth;
+
 class WorkoutService
 {
     public function getWorkoutsByIntervals(): array
@@ -40,5 +43,32 @@ class WorkoutService
         }
 
         return $arrangedWorkouts;
+    }
+
+    public function getSuggestion(string $workoutPreference, array $intervalSuggestion): array {
+        $workouts = Workout::where([
+            ['type', $workoutPreference],
+        ])->orderBy('startingHour')->get();
+
+        $workoutsDoneBasedOnInterval = [];
+        for ($i = floor($intervalSuggestion[0]); $i<= ceil($intervalSuggestion[1]); $i++){
+            $workoutsDoneBasedOnInterval[strval($i)] = 0;
+        }
+
+        foreach ($workouts as $workout){
+            if((float)$workout->startingHour >= $intervalSuggestion[0] && (float)$workout->finishHour <= $intervalSuggestion[1]) {
+                $startingHour = floor($workout->startingHour);
+                $finishHour = ceil($workout->finishHour);
+                //meaning that we log that he has been at every hour
+                for ($i = $startingHour; $i <= $finishHour; $i++) {
+                    $workoutsDoneBasedOnInterval[$i]++;
+                }
+            }
+        }
+
+        $minValue = array_search(min($workoutsDoneBasedOnInterval), $workoutsDoneBasedOnInterval);
+        $interval = [$minValue, $minValue + 1];
+
+        return [$interval];
     }
 }

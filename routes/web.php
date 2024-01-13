@@ -29,5 +29,6 @@ Route::get('/workoutsToday',[WorkoutController::class, 'showByDay']);
 Route::get('/workoutsToday/type',[WorkoutController::class, 'showByType']);
 
 Route::get('/statistics', [StatisticsController::class, 'statistics']);
+Route::post('/suggestion', [WorkoutController::class, 'showSuggestion']);
 
 require __DIR__.'/auth.php';

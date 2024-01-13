@@ -4,6 +4,8 @@ class WorkoutDefaults {
     hourInterval: [number, number] = [10, 12];
     workoutType: { value: number; label: string }= {value: 1, label: 'Back'};
     description: string = '';
+    workoutTypeSuggestion: { value: number; label: string }= {value: 1, label: 'Back'};
+    hourIntervalSuggestion: [number, number] = [10, 12];
 }
 
 export default WorkoutDefaults;

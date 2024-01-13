@@ -8,6 +8,7 @@ use App\Models\Workout;
 use App\Repositories\WorkoutRepository;
 use App\Services\StatisticsService;
 use App\Services\WorkoutService;
+use http\Params;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -91,5 +92,12 @@ class WorkoutController extends Controller
     public function showByType(): array
     {
         return $this->workoutService->getWorkoutsByType();
+    }
+
+    public function showSuggestion(Request $request): array
+    {
+        $workoutPreference = $request->get('workoutTypeSuggestion');
+        $intervalPreference = $request->get('hourIntervalSuggestion');
+        return $this->workoutService->getSuggestion($workoutPreference, $intervalPreference);
     }
 }

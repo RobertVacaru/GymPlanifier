@@ -1,4 +1,15 @@
-import {Divider, FormLabel, Input, Option, Select, Slider, Textarea, Typography} from "@mui/joy";
+import {
+  Accordion,
+  AccordionDetails, AccordionGroup, AccordionSummary,
+  Divider,
+  FormLabel,
+  Input,
+  Option,
+  Select,
+  Slider,
+  Textarea,
+  Typography
+} from "@mui/joy";
 import {Form} from "react-bootstrap";
 import {Controller, useForm} from "react-hook-form";
 import {Fragment, useEffect, useState} from "react";
@@ -6,6 +17,8 @@ import useAuthContext from "../contexts/AuthContext.tsx";
 import UserInterface from "../Interfaces/UserInterface.tsx";
 import WorkoutDefaults from "../components/helpers/WorkoutDefaults.tsx";
 import axios from "../api/axios.ts";
+import Button from "@mui/joy/Button";
+import Box from "@mui/joy/Box";
 
 interface Workout {
   workoutModal?: boolean,
@@ -27,8 +40,10 @@ export default function AddWorkoutForm(props?: Workout) {
 
   const workouts = [{value: 1, label: 'Back'}, {value: 2, label: 'Chest'}, {value: 3, label: 'Legs'}, {value: 4, label: 'Shoulders'}, {value: 5, label: 'Cardio'}];
   const [marks, setMarks] = useState([{value: 10, label: valueText(10)}, {value: 12, label: valueText(12)}]);
+  const [suggestionMarks, setSuggestionMarks] = useState([{value: 10, label: valueText(10)}, {value: 12, label: valueText(12)}]);
   const [workoutData, setWorkoutData] = useState(null)
   const [hourInterval, setHourInterval] = useState<Array<number>>([10,12])
+  const [suggestionHourInterval, setSuggestionHourInterval] = useState<Array<number>>([10,12])
 
   const {
     handleSubmit,
@@ -59,17 +74,26 @@ export default function AddWorkoutForm(props?: Workout) {
     setHourInterval([newMarks[0].value, newMarks[1].value])
   }
 
-  const cleanHourInterval = (data: any) => {
-    data.hourInterval = marks;
-    if(data.hourInterval[0].label){
-      data.hourInterval[0] = data.hourInterval[0].value
-      data.hourInterval[1] = data.hourInterval[1].value
+  const setValuesForSuggestionMarks = (values: []) => {
+    // you will always have two
+    let newMarks = values.map((value: number) => {
+      return {value: value, label: valueText(value)}
+    })
+    setSuggestionMarks(newMarks)
+    setSuggestionHourInterval([newMarks[0].value, newMarks[1].value])
+  }
+
+  const cleanHourInterval = (data: any, marks: any, hourInterval: string) => {
+    data[hourInterval] = marks;
+    if(data[hourInterval][0].label){
+      data[hourInterval][0] = data[hourInterval][0].value
+      data[hourInterval][1] = data[hourInterval][1].value
     }
     return data;
   }
 
   const submit = async (data: any) => {
-    data = cleanHourInterval(data);
+    data = cleanHourInterval(data, marks, 'hourInterval');
     try {
       await axios.post(`/workouts/${user.id}/add`, data).then(() => {
         props.setWorkoutModal(false)
@@ -83,6 +107,13 @@ export default function AddWorkoutForm(props?: Workout) {
         setError(e.response.data.errors);
       }
     }
+  }
+
+  const getSuggestion = async (data: any) => {
+    data = cleanHourInterval(data, suggestionMarks, 'hourIntervalSuggestion')
+    await axios.post('/suggestion', data).then((response) => {
+      console.log(response.data)
+    });
   }
 
   const getWorkoutData = async () => {
@@ -170,6 +201,53 @@ export default function AddWorkoutForm(props?: Workout) {
           />
         </Form.Group>
         <Input type={"submit"} style={{float: 'right'}}>Submit</Input>
+      </Form>
+
+      <br/>
+      <Divider/>
+      <br/>
+      <Form onSubmit={handleSubmit((data: WorkoutDefaults) => getSuggestion(data))}>
+      <Form.Group controlId="formSelect" className={"form-group"}>
+        <FormLabel className={"label"}>Input your preferred workout type for the suggestion</FormLabel>
+        <Controller
+          name="workoutTypeSuggestion"
+          control={control}
+          render={(field: { onChange, onBlur, value }) => (
+            <Select
+              onChange={(e) => {
+                setValue('workoutTypeSuggestion', e?.target?.outerText)
+              }}
+              defaultValue={props?.workoutType ?? field.value}
+            >
+              {workouts.map((workout: any) => {
+                return (<Option value={workout.value}>{workout.label}</Option>)
+              })}
+            </Select>
+          )}
+        />
+      </Form.Group>
+
+      <Form.Group controlId={"formSlider"} className={"form-group"}>
+        <FormLabel className={"label"}>Input your preferred time interval for the suggestion</FormLabel>
+        <Slider
+          id='hourSliderSuggestion'
+          getAriaLabel={() => 'Workout Time interval'}
+          min={8}
+          max={22}
+          step={0.5}
+          value={suggestionHourInterval}
+          onChange={(e) => {
+            // @ts-ignore
+            setValuesForSuggestionMarks(e?.target.value)
+          }}
+          valueLabelDisplay="off"
+          marks={suggestionMarks}
+        />
+      </Form.Group>
+
+      <Box textAlign='center'>
+        <Button type={"submit"} sx={{width: '50%'}}>Give me suggestion</Button>
+      </Box>
       </Form>
     </Fragment>
   );

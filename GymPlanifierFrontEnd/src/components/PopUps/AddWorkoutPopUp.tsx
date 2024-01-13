@@ -27,7 +27,7 @@ export default function addWorkoutPopUp(props: Workout) {
                 aria-labelledby="variant-modal-title"
                 aria-describedby="variant-modal-description"
                 variant={"outlined"}
-                sx={{width: '35rem'}}
+                sx={{width: '35rem', overflow: 'auto'}}
             >
                 <ModalClose/>
                 <AddWorkoutForm
