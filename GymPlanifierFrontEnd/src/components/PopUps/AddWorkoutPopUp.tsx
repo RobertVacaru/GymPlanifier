@@ -1,4 +1,4 @@
-import {Modal, ModalClose, ModalDialog} from "@mui/joy";
+import {Divider, Modal, ModalClose, ModalDialog, Typography} from "@mui/joy";
 import AddWorkoutForm from "../../forms/AddWorkoutForm.tsx";
 
 interface Workout {
@@ -30,6 +30,10 @@ export default function addWorkoutPopUp(props: Workout) {
                 sx={{width: '35rem', overflow: 'auto'}}
             >
                 <ModalClose/>
+                <Typography id="variant-modal-title" level="h2" textColor="inherit" textAlign={'center'}>
+                  Input your preferred workout for the day
+                </Typography>
+                <Divider className={"mb-2"}/>
                 <AddWorkoutForm
                   setWorkoutModal={props.setWorkoutModal}
                   workoutModal={props.workoutModal}

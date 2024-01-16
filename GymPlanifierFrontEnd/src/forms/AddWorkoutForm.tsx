@@ -130,11 +130,6 @@ export default function AddWorkoutForm(props?: Workout) {
 
   return (
     <Fragment>
-      <Typography id="variant-modal-title" level="h2" textColor="inherit">
-        Input your preferred workout for the day
-      </Typography>
-      <Divider className={"mb-2"}/>
-
       <Form onSubmit={handleSubmit((data) => submit(data))}>
         <Form.Group controlId="datePicker" className={"form-group"}>
           <FormLabel className={"label"}>Input your preferred date</FormLabel>
@@ -200,9 +195,12 @@ export default function AddWorkoutForm(props?: Workout) {
             )}
           />
         </Form.Group>
-        <Input type={"submit"} style={{float: 'right'}}>Submit</Input>
+        <Box textAlign='center'>
+          <Button type={"submit"} sx={{width: '50%'}}>Submit</Button>
+        </Box>
       </Form>
 
+      <br/>
       <br/>
       <Divider/>
       <br/>
