@@ -1,6 +1,4 @@
 import {
-  Accordion,
-  AccordionDetails, AccordionGroup, AccordionSummary,
   Divider,
   FormLabel,
   Input,
@@ -8,7 +6,8 @@ import {
   Select,
   Slider,
   Textarea,
-  Typography
+  Typography,
+  CircularProgress
 } from "@mui/joy";
 import {Form} from "react-bootstrap";
 import {Controller, useForm} from "react-hook-form";
@@ -26,7 +25,8 @@ interface Workout {
   workoutId?: number|null,
   hourInterval?: string|null,
   workoutType?: string|null
-  refreshData?: Function
+  refreshData?: Function,
+  goTo?: Function
 }
 
 export default function AddWorkoutForm(props?: Workout) {
@@ -44,6 +44,7 @@ export default function AddWorkoutForm(props?: Workout) {
   const [workoutData, setWorkoutData] = useState(null)
   const [hourInterval, setHourInterval] = useState<Array<number>>([10,12])
   const [suggestionHourInterval, setSuggestionHourInterval] = useState<Array<number>>([10,12])
+  const [loading, setLoading] = useState(false)
 
   const {
     handleSubmit,
@@ -95,11 +96,18 @@ export default function AddWorkoutForm(props?: Workout) {
   const submit = async (data: any) => {
     data = cleanHourInterval(data, marks, 'hourInterval');
     try {
+      setLoading(true)
       await axios.post(`/workouts/${user.id}/add`, data).then(() => {
-        props.setWorkoutModal(false)
+        if (props?.setWorkoutModal){
+          props.setWorkoutModal(false)
+        }
         if(props?.refreshData) {
           props.refreshData(true)
         }
+        if(props?.goTo){
+          props.goTo()
+        }
+        setLoading(false)
       });
     } catch (e: any) {
       if (e.response && e.response.status === 422) {
@@ -129,6 +137,11 @@ export default function AddWorkoutForm(props?: Workout) {
   }, [props.workoutId]);
 
   return (
+        loading ?
+          <div style={{height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <CircularProgress size={"lg"}/>
+          </div>
+        :
     <Fragment>
       <Form onSubmit={handleSubmit((data) => submit(data))}>
         <Form.Group controlId="datePicker" className={"form-group"}>
@@ -202,6 +215,9 @@ export default function AddWorkoutForm(props?: Workout) {
 
       <br/>
       <br/>
+      <Typography id="variant-modal-title" level="h2" textColor="inherit" textAlign={'center'}>
+          ↓ Below you can get a suggestion for a workout ↓
+      </Typography>
       <Divider/>
       <br/>
       <Form onSubmit={handleSubmit((data: WorkoutDefaults) => getSuggestion(data))}>

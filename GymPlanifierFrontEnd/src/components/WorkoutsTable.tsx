@@ -36,6 +36,7 @@ import useAuthContext from "../contexts/AuthContext.tsx";
 import WorkoutInterface from "../Interfaces/WorkoutInterface.tsx";
 import Avatar from "@mui/joy/Avatar";
 import Link from "@mui/joy/Link";
+import {CircularProgress} from "@mui/joy";
 
 interface PropsWorkout {
   workoutPopUp: boolean,
@@ -50,6 +51,7 @@ export default function WorkoutsTable(props: PropsWorkout) {
   const [workoutTypeFilter, setWorkoutTypeFilter] = useState(null)
   const [statusTypeFilter, setStatusTypeFilter] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [loading, setLoading] = useState(false)
   const {user} = useAuthContext();
 
   const getOwnerWorkoutData = async (page: number = 1, workoutTypeFilter: string = '', statusTypeFilter: string = '') => {
@@ -59,9 +61,11 @@ export default function WorkoutsTable(props: PropsWorkout) {
     } else {
       params = {params: {page: page}}
     }
+    setLoading(true)
     await axios.get('/workouts/'+ user.id +'/ownedByUser', params).then((response) => {
       console.log(response)
       setWorkoutData(response.data.data)
+      setLoading(false)
     });
   }
 
@@ -231,7 +235,12 @@ export default function WorkoutsTable(props: PropsWorkout) {
           </tr>
           </thead>
           <tbody>
-          {workoutData?.map((workout) => (
+          {loading ?
+              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '50.5rem', marginBottom: '1rem', marginTop: '1rem'}}>
+                  <CircularProgress size={"md"}/>
+              </div>
+              :
+          workoutData?.map((workout) => (
             <tr key={workout.id}>
               <td>
                 <Typography level="body-md">{workout.date}</Typography>
