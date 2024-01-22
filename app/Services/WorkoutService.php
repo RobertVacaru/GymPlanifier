@@ -69,6 +69,9 @@ class WorkoutService
         $minValue = array_search(min($workoutsDoneBasedOnInterval), $workoutsDoneBasedOnInterval);
         $interval = [$minValue, $minValue + 1];
 
-        return [$interval];
+        return [
+            'interval' => $interval,
+            'workoutType' => $workoutPreference
+            ];
     }
 }

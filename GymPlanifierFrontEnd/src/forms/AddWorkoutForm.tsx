@@ -11,7 +11,7 @@ import {
 } from "@mui/joy";
 import {Form} from "react-bootstrap";
 import {Controller, useForm} from "react-hook-form";
-import {Fragment, useEffect, useState} from "react";
+import {Fragment, SyntheticEvent, useEffect, useState} from "react";
 import useAuthContext from "../contexts/AuthContext.tsx";
 import UserInterface from "../Interfaces/UserInterface.tsx";
 import WorkoutDefaults from "../components/helpers/WorkoutDefaults.tsx";
@@ -45,6 +45,7 @@ export default function AddWorkoutForm(props?: Workout) {
   const [hourInterval, setHourInterval] = useState<Array<number>>([10,12])
   const [suggestionHourInterval, setSuggestionHourInterval] = useState<Array<number>>([10,12])
   const [loading, setLoading] = useState(false)
+  const [workoutType, setWorkoutType] = useState<any>('Legs')
 
   const {
     handleSubmit,
@@ -120,9 +121,15 @@ export default function AddWorkoutForm(props?: Workout) {
   const getSuggestion = async (data: any) => {
     data = cleanHourInterval(data, suggestionMarks, 'hourIntervalSuggestion')
     await axios.post('/suggestion', data).then((response) => {
-      console.log(response.data)
-    });
-  }
+      setHourInterval(response.data.interval)
+      setValuesForMarks(response.data.interval)
+      setWorkoutType(workouts.filter((workout:any) => {
+          if(workout.label === response.data.workoutType) {
+            return workout.value
+          }
+        }
+      )[0].value);
+  })}
 
   const getWorkoutData = async () => {
     await axios.get('/workouts/' + props.workoutId ).then((response) => {
@@ -165,10 +172,11 @@ export default function AddWorkoutForm(props?: Workout) {
             control={control}
             render={(field: { onChange, onBlur, value }) => (
               <Select
-                onChange={(e) => {
-                  setValue('workoutType', e?.target?.outerText)
+                onChange={(event: SyntheticEvent | null,
+                           newValue: Array<string> | null) => {
+                  setWorkoutType(newValue)
                 }}
-                defaultValue={props?.workoutType ?? field.value}
+                value={workoutType ?? ""}
               >
                 {workouts.map((workout: any) => {
                   return (<Option value={workout.value}>{workout.label}</Option>)
