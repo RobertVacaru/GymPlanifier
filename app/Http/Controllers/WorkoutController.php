@@ -60,7 +60,7 @@ class WorkoutController extends Controller
 
             $workout->startingHour = $request->get('hourInterval')[0];
             $workout->finishHour = $request->get('hourInterval')[1];
-            $workout->type = $request->get('workoutType');
+            $workout->type = $request->get('workoutType')['label'];
             $workout->date = $request->get('dateWorkout');
             $workout->owner_id = \Auth::user()['id'];
             $workout->description = $request->get('description');
@@ -96,7 +96,7 @@ class WorkoutController extends Controller
 
     public function showSuggestion(Request $request): array
     {
-        $workoutPreference = $request->get('workoutTypeSuggestion');
+        $workoutPreference = $request->get('workoutTypeSuggestion') ?? '';
         $intervalPreference = $request->get('hourIntervalSuggestion');
         return $this->workoutService->getSuggestion($workoutPreference, $intervalPreference);
     }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Workout;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class WorkoutService
@@ -46,17 +47,41 @@ class WorkoutService
     }
 
     public function getSuggestion(string $workoutPreference, array $intervalSuggestion): array {
+        // of no workout preference is selected than we calculate it based on previous workouts
+        if(!$workoutPreference) {
+            $today = Carbon::today()->dayName;
+            $today = 'Saturday';
+
+            // we get the start of the week
+            $start = new \DateTime();
+            if ('Monday' !== $start->format('l')) {
+                $start->modify(sprintf('- %d days', (int)$start->format('w') - 1));
+            }
+            $start->setTime(0, 0, 0);
+
+            // we get all the workouts till that date
+            $workouts = Workout::where('date', '<=', $start)->get();
+            $typeOfWorkouts = [];
+            foreach ($workouts as $workout) {
+                $dayName = Carbon::parse($workout->date)->dayName;
+                if ($dayName === $today) {
+                    isset($typeOfWorkouts[$workout->type]) ? $typeOfWorkouts[$workout->type]++ : $typeOfWorkouts[$workout->type] = 1;
+                }
+            }
+            $workoutPreference = $typeOfWorkouts ? array_keys($typeOfWorkouts, min($typeOfWorkouts))[0] : 'Chest';
+        }
+
         $workouts = Workout::where([
             ['type', $workoutPreference],
         ])->orderBy('startingHour')->get();
 
         $workoutsDoneBasedOnInterval = [];
-        for ($i = floor($intervalSuggestion[0]); $i<= ceil($intervalSuggestion[1]); $i++){
+        for ($i = floor($intervalSuggestion[0]); $i <= ceil($intervalSuggestion[1]); $i++) {
             $workoutsDoneBasedOnInterval[strval($i)] = 0;
         }
 
-        foreach ($workouts as $workout){
-            if((float)$workout->startingHour >= $intervalSuggestion[0] && (float)$workout->finishHour <= $intervalSuggestion[1]) {
+        foreach ($workouts as $workout) {
+            if ((float)$workout->startingHour >= $intervalSuggestion[0] && (float)$workout->finishHour <= $intervalSuggestion[1]) {
                 $startingHour = floor($workout->startingHour);
                 $finishHour = ceil($workout->finishHour);
                 //meaning that we log that he has been at every hour

@@ -72,7 +72,7 @@ export default function MainPage() {
             </Typography>
           </CardContent>
           <CardActions buttonFlex="0 1 120px">
-            <Button variant="outlined" color="neutral" onClick={() => navigate('/dailyWorkouts')}>
+            <Button variant="solid" color="primary" onClick={() => navigate('/dailyWorkouts')}>
               View
             </Button>
           </CardActions>
@@ -103,7 +103,7 @@ export default function MainPage() {
             </Typography>
           </CardContent>
           <CardActions buttonFlex="0 1 120px">
-            <Button variant="outlined" color="neutral" onClick={() => navigate('/myWorkouts')}>
+            <Button variant="solid" color="primary" onClick={() => navigate('/myWorkouts')}>
               View
             </Button>
           </CardActions>
@@ -135,7 +135,7 @@ export default function MainPage() {
             </Typography>
           </CardContent>
           <CardActions buttonFlex="0 1 120px">
-            <Button variant="outlined" color="neutral" onClick={() => navigate('/addWorkout')}>
+            <Button variant="solid" color="primary" onClick={() => navigate('/addWorkout')}>
               View
             </Button>
           </CardActions>
@@ -165,7 +165,7 @@ export default function MainPage() {
             </Typography>
           </CardContent>
           <CardActions buttonFlex="0 1 120px">
-            <Button variant="outlined" color="neutral" onClick={() => navigate('/statistics')}>
+            <Button variant="solid" color="primary" onClick={() => navigate('/statistics')}>
               View
             </Button>
           </CardActions>

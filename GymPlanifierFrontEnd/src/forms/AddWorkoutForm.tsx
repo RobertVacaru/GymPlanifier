@@ -40,12 +40,12 @@ export default function AddWorkoutForm(props?: Workout) {
 
   const workouts = [{value: 1, label: 'Back'}, {value: 2, label: 'Chest'}, {value: 3, label: 'Legs'}, {value: 4, label: 'Shoulders'}, {value: 5, label: 'Cardio'}];
   const [marks, setMarks] = useState([{value: 10, label: valueText(10)}, {value: 12, label: valueText(12)}]);
-  const [suggestionMarks, setSuggestionMarks] = useState([{value: 10, label: valueText(10)}, {value: 12, label: valueText(12)}]);
+  const [suggestionMarks, setSuggestionMarks] = useState([{value: 8, label: valueText(8)}, {value: 22, label: valueText(22)}]);
   const [workoutData, setWorkoutData] = useState(null)
   const [hourInterval, setHourInterval] = useState<Array<number>>([10,12])
-  const [suggestionHourInterval, setSuggestionHourInterval] = useState<Array<number>>([10,12])
+  const [suggestionHourInterval, setSuggestionHourInterval] = useState<Array<number>>([8,22])
   const [loading, setLoading] = useState(false)
-  const [workoutType, setWorkoutType] = useState<any>('Legs')
+  const [workoutType, setWorkoutType] = useState<any>('')
 
   const {
     handleSubmit,
@@ -120,6 +120,7 @@ export default function AddWorkoutForm(props?: Workout) {
 
   const getSuggestion = async (data: any) => {
     data = cleanHourInterval(data, suggestionMarks, 'hourIntervalSuggestion')
+    setLoading(true)
     await axios.post('/suggestion', data).then((response) => {
       setHourInterval(response.data.interval)
       setValuesForMarks(response.data.interval)
@@ -128,7 +129,10 @@ export default function AddWorkoutForm(props?: Workout) {
             return workout.value
           }
         }
-      )[0].value);
+      )[0].value)
+      setLoading(false)
+      setSuggestionMarks([{value: 8, label: valueText(8)}, {value: 22, label: valueText(22)}])
+      setSuggestionHourInterval([8,22])
   })}
 
   const getWorkoutData = async () => {
@@ -152,7 +156,7 @@ export default function AddWorkoutForm(props?: Workout) {
     <Fragment>
       <Form onSubmit={handleSubmit((data) => submit(data))}>
         <Form.Group controlId="datePicker" className={"form-group"}>
-          <FormLabel className={"label"}>Input your preferred date</FormLabel>
+          <FormLabel className={"label"}>Input your preferred date*</FormLabel>
           <Input
             type="date"
             slotProps={{
@@ -166,7 +170,7 @@ export default function AddWorkoutForm(props?: Workout) {
           />
         </Form.Group>
         <Form.Group controlId="formSelect" className={"form-group"}>
-          <FormLabel className={"label"}>Input your preferred workout type</FormLabel>
+          <FormLabel className={"label"}>Input your preferred workout type*</FormLabel>
           <Controller
             name="workoutType"
             control={control}
@@ -186,7 +190,7 @@ export default function AddWorkoutForm(props?: Workout) {
           />
         </Form.Group>
         <Form.Group controlId={"formSlider"} className={"form-group"}>
-          <FormLabel className={"label"}>Input your preferred time interval</FormLabel>
+          <FormLabel className={"label"}>Input your preferred time interval*</FormLabel>
           <Slider
             id='hourSlider'
             getAriaLabel={() => 'Workout Time interval'}
