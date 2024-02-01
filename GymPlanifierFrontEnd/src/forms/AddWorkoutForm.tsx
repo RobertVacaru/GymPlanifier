@@ -179,6 +179,7 @@ export default function AddWorkoutForm(props?: Workout) {
                 onChange={(event: SyntheticEvent | null,
                            newValue: Array<string> | null) => {
                   setWorkoutType(newValue)
+                  setValue('workoutType', event?.target?.outerText)
                 }}
                 value={workoutType ?? ""}
               >
@@ -227,7 +228,7 @@ export default function AddWorkoutForm(props?: Workout) {
 
       <br/>
       <br/>
-      <Typography id="variant-modal-title" level="h2" textColor="inherit" textAlign={'center'}>
+      <Typography id="variant-modal-title" level={props?.goTo ? "h3" : "h2"} textColor="inherit" textAlign={'center'}>
           ↓ Below you can get a suggestion for a workout ↓
       </Typography>
       <Divider/>

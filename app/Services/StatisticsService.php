@@ -49,7 +49,7 @@ class StatisticsService
 
         foreach ($dailyArray as $day => $workoutsBasedOnDay) {
             /**@var DailyStatistics $daily */
-            $daily = DailyStatistics::all()->where(['day' => $day, 'parentId' => $statistics->id])->first();
+            $daily = $statistics->statisticsByDay($day);
             if (!$daily) {
                 $daily = new DailyStatistics();
                 $daily->day = $day;
@@ -76,17 +76,31 @@ class StatisticsService
         if ($allUsers) {
             $statistics = DailyStatistics::all();
         } else {
-            $statistics = \Auth::user()->statistics;
-            $statistics = $statistics->dailyStatistics;
+            if(\Auth::user()->statistics) {
+                $statistics = \Auth::user()->statistics;
+                $statistics = $statistics->dailyStatistics;
+            } else {
+                return [];
+            }
         }
+        $weekDays= ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 
         $data = [];
+        foreach ($weekDays as $weekDay){
+            $obj = new \stdClass();
+            $obj->x = $weekDay;
+            $obj->y = '';
+            $data[] = $obj;
+        }
+
         foreach ($statistics as $statistic) {
             $obj = new \stdClass();
             $obj->x = $statistic->day;
             $obj->y = $statistic->preferredWorkout;
-            $obj->z = $statistic->preferredStartingHour . '-' . $statistic->preferredFinishingHour;
-            $data[] = $obj;
+            $index = array_column($data, 'x');
+            $map = array_flip($index);
+            $data[$map[$statistic->day] ?? null] = $obj;
         }
 
         return $data;

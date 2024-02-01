@@ -33,4 +33,9 @@ class Statistics extends Model
     {
         return $this->hasMany(DailyStatistics::class, 'parent_id');
     }
+
+    public function statisticsByDay(string $day)
+    {
+        return $this->dailyStatistics()->where('day','=', $day)->first();
+    }
 }

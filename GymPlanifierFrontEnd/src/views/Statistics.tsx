@@ -5,14 +5,15 @@ import {Area, AreaChart, CartesianGrid, Legend, Scatter, ScatterChart, Tooltip, 
 import axios from "../api/axios.ts";
 
 export default function Statistics() {
-  const workoutTypes = ["Chest", "Back", "Shoulders", "Arms", "Legs" ,"Cardio"]
-  const days = ["Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday", "Sunday"]
+  const workoutTypes = ["", "Chest", "Back", "Shoulders", "Arms", "Legs" ,"Cardio"]
+  const days = ["","Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday", "Sunday"]
   const [chartData, setChartData] = useState<Array<any>>(null)
   const [secondChartData, setSecondChartData] = useState<Array<any>>(null)
 
   const getChartData = async (allUsers: boolean = false) => {
     await axios.get('/statistics', {params:{allUsers: allUsers}}).then((response) => {
-      allUsers ? setSecondChartData(response.data) : setChartData(response.data);
+      //@ts-ignore
+      allUsers && response.data !== [] ? setSecondChartData(response.data) : setChartData(response.data);
     });
   }
 
@@ -30,9 +31,9 @@ export default function Statistics() {
 
   return(
     <Fragment>
-      <HeaderPage headerText={'Statistics'} headerSmallText={'Check out statistics based on your workouts'}/>
+      <HeaderPage headerText={'Statistics'} headerSmallText={'Below we can see a comparison between most usual type of workouts that you do based on every day vs the ones done by the other members of the gym'}/>
 
-      <h4>Type of workouts distribution based on your workouts</h4>
+      <h4>Most usual type of workout done by you</h4>
       <AreaChart
         width={1500}
         height={300}
@@ -41,7 +42,7 @@ export default function Statistics() {
         margin={{
           top: 10,
           right: 30,
-          left: 0,
+          left: 20,
           bottom: 0,
         }}
       >
@@ -52,16 +53,16 @@ export default function Statistics() {
         <Area type="monotone" dataKey="y"  stroke="#8884d8" fill="#8884d8" />
       </AreaChart>
 
-      <h4>Type of workouts distribution based on other people's workouts</h4>
+      <h4>Most usual type of workout done by other people</h4>
       <AreaChart
         width={1500}
         height={300}
-        data={chartData}
+        data={secondChartData}
         syncId="anyId"
         margin={{
           top: 10,
           right: 30,
-          left: 0,
+          left: 20,
           bottom: 0,
         }}
       >

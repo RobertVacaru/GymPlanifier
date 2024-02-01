@@ -19,7 +19,7 @@ export default function AddWorkout() {
         alignItems="center"
         justifyContent="center"
       >
-        <Grid xs={3}>
+        <Grid xs={4}>
           <AddWorkoutForm goTo={() => navigate('/dailyWorkouts')}/>
         </Grid>
       </Grid>

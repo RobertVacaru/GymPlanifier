@@ -60,7 +60,7 @@ class WorkoutController extends Controller
 
             $workout->startingHour = $request->get('hourInterval')[0];
             $workout->finishHour = $request->get('hourInterval')[1];
-            $workout->type = $request->get('workoutType')['label'];
+            $workout->type = $request->get('workoutType')['label'] ?? $request->get('workoutType');
             $workout->date = $request->get('dateWorkout');
             $workout->owner_id = \Auth::user()['id'];
             $workout->description = $request->get('description');

@@ -12,6 +12,6 @@ class StatisticsController extends Controller {
 
     public function statistics(Request $request): array
     {
-        return $this->statisticsService->getStatisticsForChart($request->get('allUsers'));
+        return $this->statisticsService->getStatisticsForChart($request->get('allUsers') === 'true');
     }
 }
