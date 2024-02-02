@@ -98,6 +98,7 @@ class WorkoutController extends Controller
     {
         $workoutPreference = $request->get('workoutTypeSuggestion') ?? '';
         $intervalPreference = $request->get('hourIntervalSuggestion');
-        return $this->workoutService->getSuggestion($workoutPreference, $intervalPreference);
+        $dateWorkout = $request->get('dateWorkout');
+        return $this->workoutService->getSuggestion($workoutPreference, $intervalPreference, $dateWorkout);
     }
 }

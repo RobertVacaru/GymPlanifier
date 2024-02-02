@@ -13,7 +13,7 @@ export default function Statistics() {
   const getChartData = async (allUsers: boolean = false) => {
     await axios.get('/statistics', {params:{allUsers: allUsers}}).then((response) => {
       //@ts-ignore
-      allUsers && response.data !== [] ? setSecondChartData(response.data) : setChartData(response.data);
+      allUsers ? setSecondChartData(response.data) : setChartData(response.data);
     });
   }
 

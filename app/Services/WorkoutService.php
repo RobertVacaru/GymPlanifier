@@ -46,11 +46,10 @@ class WorkoutService
         return $arrangedWorkouts;
     }
 
-    public function getSuggestion(string $workoutPreference, array $intervalSuggestion): array {
+    public function getSuggestion(string $workoutPreference, array $intervalSuggestion, string $dateWorkout): array {
         // of no workout preference is selected than we calculate it based on previous workouts
         if(!$workoutPreference) {
             $today = Carbon::today()->dayName;
-            $today = 'Saturday';
 
             // we get the start of the week
             $start = new \DateTime();
@@ -68,11 +67,12 @@ class WorkoutService
                     isset($typeOfWorkouts[$workout->type]) ? $typeOfWorkouts[$workout->type]++ : $typeOfWorkouts[$workout->type] = 1;
                 }
             }
-            $workoutPreference = $typeOfWorkouts ? array_keys($typeOfWorkouts, min($typeOfWorkouts))[0] : 'Chest';
+            $workoutPreference = $typeOfWorkouts ? $this->compareWorkouts($typeOfWorkouts, $start) : '';
         }
 
         $workouts = Workout::where([
             ['type', $workoutPreference],
+//            ['day', new \DateTime()]
         ])->orderBy('startingHour')->get();
 
         $workoutsDoneBasedOnInterval = [];
@@ -98,5 +98,22 @@ class WorkoutService
             'interval' => $interval,
             'workoutType' => $workoutPreference
             ];
+    }
+
+    public function compareWorkouts(array $typeOfWorkouts, $start){
+        $workouts = Workout::where(
+            'date', '>', $start
+        )->where('owner_id', '=', \Auth::user()['id'])->get();
+
+        asort($typeOfWorkouts);
+
+        $workoutsDays = [];
+        foreach ($workouts as $workout){
+            $dayName = Carbon::parse($workout->date)->dayName;
+            $workoutsDays[] = $dayName;
+            $workoutsDays = array_unique($workoutsDays);
+        }
+
+        return array_diff(array_keys($typeOfWorkouts), $workoutsDays)[0];
     }
 }
