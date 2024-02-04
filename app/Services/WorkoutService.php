@@ -49,12 +49,12 @@ class WorkoutService
     public function getSuggestion(string $workoutPreference, array $intervalSuggestion, string $dateWorkout): array {
         // of no workout preference is selected than we calculate it based on previous workouts
         if(!$workoutPreference) {
-            $today = Carbon::today()->dayName;
+            $today = Carbon::parse($dateWorkout)->dayName;
 
             // we get the start of the week
-            $start = new \DateTime();
+            $start = new \DateTime($dateWorkout);
             if ('Monday' !== $start->format('l')) {
-                $start->modify(sprintf('- %d days', (int)$start->format('w') - 1));
+                $start->modify(sprintf('- %d days', (int)$start->format('W') -1));
             }
             $start->setTime(0, 0, 0);
 
@@ -96,7 +96,8 @@ class WorkoutService
 
         return [
             'interval' => $interval,
-            'workoutType' => $workoutPreference
+            'workoutType' => $workoutPreference,
+            'date' => $dateWorkout
             ];
     }
 

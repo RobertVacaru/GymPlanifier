@@ -46,6 +46,7 @@ export default function AddWorkoutForm(props?: Workout) {
   const [suggestionHourInterval, setSuggestionHourInterval] = useState<Array<number>>([8,22])
   const [loading, setLoading] = useState(false)
   const [workoutType, setWorkoutType] = useState<any>('')
+  const [day, setDay] =  useState(new Date().toISOString().split('T')[0])
 
   const {
     handleSubmit,
@@ -130,6 +131,7 @@ export default function AddWorkoutForm(props?: Workout) {
           }
         }
       )[0].value)
+      setDay(new Date(response.data.date).toISOString().split('T')[0])
       setLoading(false)
       setSuggestionMarks([{value: 8, label: valueText(8)}, {value: 22, label: valueText(22)}])
       setSuggestionHourInterval([8,22])
@@ -165,7 +167,7 @@ export default function AddWorkoutForm(props?: Workout) {
                 max: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 7).toISOString().split('T')[0]
               }
             }}
-            defaultValue={new Date().toISOString().split('T')[0]}
+            defaultValue={day}
             onChange={(e) => setValue('dateWorkout', e?.target?.value)}
           />
         </Form.Group>
