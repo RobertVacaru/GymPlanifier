@@ -36,8 +36,8 @@ class WorkoutController extends Controller
     public function owned(string $id, Request $request): LengthAwarePaginator
     {
         $page = $request->get('page');
-        $workoutTypeFilter= $request->get('workoutTypeFilter');
-        $statusFilter = $request->get('statusFilter');
+        $workoutTypeFilter= $request->get('workoutTypeFilter') === 'All' ? null : $request->get('workoutTypeFilter');
+        $statusFilter = $request->get('statusFilter') === 'All' ? null : $request->get('statusFilter');
         return $this->workoutRepository->getOwnerWorkouts($id, $page, $workoutTypeFilter, $statusFilter);
     }
 

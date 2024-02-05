@@ -16,7 +16,7 @@ class WorkoutRepository implements WorkoutRepositoryInterface
         $result = Workout::where('owner_id','=', $id);
         if ($workoutTypeFilter || $statusFilter){
             if($workoutTypeFilter){
-                $result = Workout::where('type', $workoutTypeFilter);
+                $result = $result->where('type', $workoutTypeFilter);
             }
             if($statusFilter){
                 $actualDate = new DateTime('now');
@@ -33,13 +33,22 @@ class WorkoutRepository implements WorkoutRepositoryInterface
                         ['startingHour', '>', $hour],
                         ['date', $actualDate]
                     ]);
-                    $result = $result->orWhere('date', '>=', $actualDate);
+                    $result = $result->orWhere(
+                        $workoutTypeFilter ?
+                            [['type','=', $workoutTypeFilter],['owner_id','=', $id],['date', '>=', $actualDate]]
+                            :
+                        [['owner_id','=', $id],['date', '>=', $actualDate]]
+                    );
                 } else if($statusFilter === 'Finished'){
                     $result = $result->where([
                         ['date', $actualDate],
                         ['finishHour', '<', $hour]
                     ]);
-                    $result = $result->orWhere('date', '<', $actualDate);
+                    $result = $result->orWhere(
+                        $workoutTypeFilter ?
+                            [['type','=', $workoutTypeFilter],['owner_id','=', $id],['date', '<', $actualDate]]
+                            :
+                        [['owner_id','=', $id],['date', '<', $actualDate]]);
                 }
             }
 
