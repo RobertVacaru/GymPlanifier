@@ -1,6 +1,6 @@
 import {Fragment, useEffect, useState} from "react";
 import HeaderPage from "../components/HeaderPage.tsx";
-import {Stack, Typography} from "@mui/joy";
+import {CircularProgress, Stack, Typography} from "@mui/joy";
 import {Area, AreaChart, CartesianGrid, Legend, Scatter, ScatterChart, Tooltip, XAxis, YAxis, ZAxis} from "recharts";
 import axios from "../api/axios.ts";
 
@@ -9,11 +9,14 @@ export default function Statistics() {
   const days = ["","Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday", "Sunday"]
   const [chartData, setChartData] = useState<Array<any>>(null)
   const [secondChartData, setSecondChartData] = useState<Array<any>>(null)
+  const [loading, setLoading] = useState(false)
 
   const getChartData = async (allUsers: boolean = false) => {
+    setLoading(true)
     await axios.get('/statistics', {params:{allUsers: allUsers}}).then((response) => {
       //@ts-ignore
       allUsers ? setSecondChartData(response.data) : setChartData(response.data);
+      setLoading(false)
     });
   }
 
@@ -34,6 +37,7 @@ export default function Statistics() {
       <HeaderPage headerText={'Statistics'} headerSmallText={'Below we can see a comparison between most usual type of workouts that you do based on every day vs the ones done by the other members of the gym'}/>
 
       <h4>Most usual type of workout done by you</h4>
+      {!loading ?
       <AreaChart
         width={1500}
         height={300}
@@ -52,8 +56,14 @@ export default function Statistics() {
         <Tooltip />
         <Area type="monotone" dataKey="y"  stroke="#8884d8" fill="#8884d8" />
       </AreaChart>
+      :
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10rem', marginTop: '10rem'}}>
+        <CircularProgress size={"lg"}/>
+      </div>
+      }
 
       <h4>Most usual type of workout done by other people</h4>
+      {!loading ?
       <AreaChart
         width={1500}
         height={300}
@@ -72,6 +82,11 @@ export default function Statistics() {
         <Tooltip />
         <Area type="monotone" dataKey="y"  stroke="#82ca9d" fill="#82ca9d" />
       </AreaChart>
+      :
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10rem', marginTop: '10rem'}}>
+        <CircularProgress size={"lg"}/>
+      </div>
+      }
     </Fragment>
   )
 }

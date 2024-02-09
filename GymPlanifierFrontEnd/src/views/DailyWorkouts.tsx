@@ -1,7 +1,7 @@
 import {Fragment, useEffect, useState} from "react";
 import {BarChart, Bar, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 import HeaderPage from "../components/HeaderPage";
-import {Stack, Typography} from "@mui/joy";
+import {CircularProgress, Stack, Typography} from "@mui/joy";
 import AddWorkoutPopUp from "../components/PopUps/AddWorkoutPopUp";
 import WorkoutPieChart from "../components/WorkoutPieChart.tsx";
 import axios from "../api/axios.ts";
@@ -14,11 +14,16 @@ export default function DailyWorkouts() {
   const [hourInterval, setHourInterval] = useState('')
   const [workoutType, setWorkoutType] = useState('')
   const [refreshData, setRefreshData] = useState<boolean|null>()
+  const [loading, setLoading] = useState(false)
 
   const getWorkoutForToday = async () => {
+    setLoading(true)
     await axios.get('/workoutsToday').then((response) => {
       setChartData(getChartData(response.data))
       setWorkouts(response.data)
+      setTimeout(function(){
+        setLoading(false)
+      }, 1000);
     });
   }
 
@@ -94,6 +99,7 @@ export default function DailyWorkouts() {
             Workouts distribution over hours
           </Typography>
       </Stack>
+      {!loading ?
         <BarChart width={1600} height={500} data={chartData} key={`rc_${chartData}`}>
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="name"/>
@@ -109,6 +115,11 @@ export default function DailyWorkouts() {
             setHourInterval(val.name)
           }}/>
         </BarChart>
+        :
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10rem', marginTop: '10rem'}}>
+          <CircularProgress size={"lg"}/>
+        </div>
+      }
         <Divider />
 
         <Stack
