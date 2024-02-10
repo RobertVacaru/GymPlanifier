@@ -68,7 +68,7 @@ export default function AddWorkoutForm(props?: Workout) {
     }
   }, [props?.hourInterval]);
 
-  const setValuesForMarks = (values: []) => {
+  const setValuesForMarks = (values: []|any) => {
     // you will always have two
     let newMarks = values.map((value: number) => {
       return {value: value, label: valueText(value)}
@@ -138,9 +138,48 @@ export default function AddWorkoutForm(props?: Workout) {
   })}
 
   const getWorkoutData = async () => {
+    setLoading(true)
     await axios.get('/workouts/' + props.workoutId ).then((response) => {
-      setWorkoutData(response.data)
+      setWorkoutData(response.data[0])
+      setValuesForMarks([response.data[0].startingHour, response.data[0].finishHour])
+      let workout: any =  workouts.filter((workout:any) => {
+          if(workout.label === response.data[0].type) {
+            return workout
+          }
+        }
+      )[0]
+      setWorkoutType(workout.value)
+      setValue('workoutType', {value: workout.value, label: workout.label})
+      setDay(new Date(response.data[0].date).toISOString().split('T')[0])
+      setLoading(false)
+      setSuggestionMarks([{value: 8, label: valueText(8)}, {value: 22, label: valueText(22)}])
+      setSuggestionHourInterval([8,22])
     });
+  }
+
+  const edit = async (data: any) => {
+    data = cleanHourInterval(data, marks, 'hourInterval');
+    data = {workoutId: props?.workoutId ,dateWorkout: data.dateWorkout, description: data.description, hourInterval: hourInterval, workoutType: data.workoutType}
+    try {
+      setLoading(true)
+      await axios.patch(`/workouts/${user.id}/patch`, data).then(() => {
+        if (props?.setWorkoutModal){
+          props.setWorkoutModal(false)
+        }
+        if(props?.refreshData) {
+          props.refreshData(true)
+        }
+        if(props?.goTo){
+          props.goTo()
+        }
+        setLoading(false)
+      });
+    } catch (e: any) {
+      if (e.response && e.response.status === 422) {
+        // @ts-ignore
+        setError(e.response.data.errors);
+      }
+    }
   }
 
   useEffect(() => {
@@ -156,14 +195,13 @@ export default function AddWorkoutForm(props?: Workout) {
           </div>
         :
     <Fragment>
-      <Form onSubmit={handleSubmit((data) => submit(data))}>
+      <Form onSubmit={handleSubmit((data) => props.workoutId ? edit(data) : submit(data))}>
         <Form.Group controlId="datePicker" className={"form-group"}>
           <FormLabel className={"label"}>Input your preferred date*</FormLabel>
           <Input
             type="date"
             slotProps={{
               input: {
-                min: new Date().toISOString().split('T')[0],
                 max: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 7).toISOString().split('T')[0]
               }
             }}

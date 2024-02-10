@@ -25,6 +25,8 @@ Route::get('/workouts/{uniqueId}/ownedByUser',[WorkoutController::class, 'owned'
 Route::get('/workouts/{uniqueId}/test',[WorkoutController::class, 'showName']);
 
 Route::post('/workouts/{uniqueId}/add',[WorkoutController::class, 'store']);
+Route::patch('/workouts/{uniqueId}/patch',[WorkoutController::class, 'edit']);
+Route::delete('/workouts/{uniqueId}/delete',[WorkoutController::class, 'remove']);
 Route::get('/workoutsToday',[WorkoutController::class, 'showByDay']);
 Route::get('/workoutsToday/type',[WorkoutController::class, 'showByType']);
 

@@ -46,6 +46,54 @@ class WorkoutController extends Controller
         return  Workout::all()->find(1)->description;
     }
 
+    public function  remove(string $id): \Illuminate\Http\JsonResponse
+    {
+        $workout = Workout::all()->find($id);
+        $workout->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'msg' => 'Okay',
+        ], 200);
+    }
+
+    public function edit(string $id, Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $this->validate($request, [
+                'dateWorkout' => 'required|date|after_or_equal:today',
+                'workoutType' => 'required|max:100',
+                'hourInterval' => 'required|array',
+                'description' => 'max:200',
+            ]);
+
+            $workout = Workout::all()->find($request->get('workoutId'));
+
+            $workout->startingHour = $request->get('hourInterval')[0];
+            $workout->finishHour = $request->get('hourInterval')[1];
+            $workout->type = $request->get('workoutType')['label'] ?? $request->get('workoutType');
+            $workout->date = $request->get('dateWorkout');
+            $workout->owner_id = \Auth::user()['id'];
+            $workout->description = $request->get('description');
+            $workout->save();
+
+            ProcessStatistics::dispatch(\Auth::user());
+
+            return response()->json([
+                'status' => 'success',
+                'msg' => 'Okay',
+            ], 201);
+
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Error',
+                'errors' => $exception->errors(),
+            ], 422);
+        }
+    }
+
+
     public function store(string $id, Request $request): \Illuminate\Http\JsonResponse
     {
         try{

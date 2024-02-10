@@ -100,6 +100,12 @@ export default function WorkoutsTable(props: PropsWorkout) {
     }
   }
 
+  const deleteWorkout = async (workoutId: number) => {
+    await axios.delete('/workouts/' + workoutId + '/delete').then(() => {
+      getOwnerWorkoutData()
+    })
+  }
+
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -298,7 +304,7 @@ export default function WorkoutsTable(props: PropsWorkout) {
                         props.setWorkoutId(workout.id)
                       }}>Edit</MenuItem>
                       <Divider />
-                      <MenuItem color="danger">Delete</MenuItem>
+                      <MenuItem color="danger" onClick={() => deleteWorkout(workout.id)}>Delete</MenuItem>
                     </Menu>
                   </Dropdown>
                 </Box>
