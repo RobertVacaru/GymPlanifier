@@ -5,7 +5,7 @@ import {Area, AreaChart, CartesianGrid, Legend, Scatter, ScatterChart, Tooltip, 
 import axios from "../api/axios.ts";
 
 export default function Statistics() {
-  const workoutTypes = ["", "Chest", "Back", "Shoulders", "Arms", "Legs" ,"Cardio"]
+  const workoutTypes = ["", "Chest", "Back", "Shoulders", "Arms", "Legs" ,"Cardio", "Arms"]
   const days = ["","Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday", "Sunday"]
   const [chartData, setChartData] = useState<Array<any>>(null)
   const [secondChartData, setSecondChartData] = useState<Array<any>>(null)

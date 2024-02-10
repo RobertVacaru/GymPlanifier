@@ -38,7 +38,7 @@ export default function AddWorkoutForm(props?: Workout) {
     return `${Math.floor(value)}:${((value - Math.floor(value)) * 60) !== 0 ? (value - Math.floor(value)) * 60 : '00'}`
   }
 
-  const workouts = [{value:0, label: ''}, {value: 1, label: 'Back'}, {value: 2, label: 'Chest'}, {value: 3, label: 'Legs'}, {value: 4, label: 'Shoulders'}, {value: 5, label: 'Cardio'}];
+  const workouts = [{value:0, label: ''}, {value: 1, label: 'Back'}, {value: 2, label: 'Chest'}, {value: 3, label: 'Legs'}, {value: 4, label: 'Shoulders'}, {value: 5, label: 'Cardio'}, {value: 6, label: "Arms"}];
   const [marks, setMarks] = useState([{value: 10, label: valueText(10)}, {value: 12, label: valueText(12)}]);
   const [suggestionMarks, setSuggestionMarks] = useState([{value: 8, label: valueText(8)}, {value: 22, label: valueText(22)}]);
   const [workoutData, setWorkoutData] = useState(null)
@@ -125,12 +125,14 @@ export default function AddWorkoutForm(props?: Workout) {
     await axios.post('/suggestion', data).then((response) => {
       setHourInterval(response.data.interval)
       setValuesForMarks(response.data.interval)
-      setWorkoutType(workouts.filter((workout:any) => {
+      let workout: any =  workouts.filter((workout:any) => {
           if(workout.label === response.data.workoutType) {
             return workout
           }
         }
-      )[0].value)
+      )[0]
+      setWorkoutType(workout.value)
+      setValue('workoutType', {value: workout.value, label: workout.label})
       setDay(new Date(response.data.date).toISOString().split('T')[0])
       setLoading(false)
       setSuggestionMarks([{value: 8, label: valueText(8)}, {value: 22, label: valueText(22)}])
@@ -159,10 +161,10 @@ export default function AddWorkoutForm(props?: Workout) {
 
   const edit = async (data: any) => {
     data = cleanHourInterval(data, marks, 'hourInterval');
-    data = {workoutId: props?.workoutId ,dateWorkout: data.dateWorkout, description: data.description, hourInterval: hourInterval, workoutType: data.workoutType}
+    let newData = {workoutId: props?.workoutId ,dateWorkout: data.dateWorkout, description: data.description, hourInterval: hourInterval, workoutType: data.workoutType}
     try {
       setLoading(true)
-      await axios.patch(`/workouts/${user.id}/patch`, data).then(() => {
+      await axios.patch(`/workouts/${user.id}/patch`, newData).then(() => {
         if (props?.setWorkoutModal){
           props.setWorkoutModal(false)
         }

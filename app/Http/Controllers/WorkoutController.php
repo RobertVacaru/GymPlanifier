@@ -61,7 +61,7 @@ class WorkoutController extends Controller
     {
         try {
             $this->validate($request, [
-                'dateWorkout' => 'required|date|after_or_equal:today',
+                'dateWorkout' => 'required|date',
                 'workoutType' => 'required|max:100',
                 'hourInterval' => 'required|array',
                 'description' => 'max:200',
@@ -98,7 +98,7 @@ class WorkoutController extends Controller
     {
         try{
             $this->validate($request, [
-                'dateWorkout' => 'required|date|after_or_equal:today',
+                'dateWorkout' => 'required|date',
                 'workoutType' => 'required|max:100',
                 'hourInterval' => 'required|array',
                 'description' => 'max:200',

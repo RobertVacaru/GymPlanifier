@@ -44,6 +44,8 @@ interface PropsWorkout {
   setWorkoutPopUp: Function,
   workoutId: number|null,
   setWorkoutId: Function,
+  refresh: boolean,
+  setRefresh: Function
 }
 
 export default function WorkoutsTable(props: PropsWorkout) {
@@ -54,6 +56,13 @@ export default function WorkoutsTable(props: PropsWorkout) {
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const {user} = useAuthContext();
+
+  useEffect(() => {
+    if(props?.refresh){
+      getOwnerWorkoutData()
+      props.setRefresh(false)
+    }
+  }, [props.refresh]);
 
   const getOwnerWorkoutData = async (page: number = 1, workoutTypeFilter: string = '', statusTypeFilter: string = '') => {
     let params = {}
