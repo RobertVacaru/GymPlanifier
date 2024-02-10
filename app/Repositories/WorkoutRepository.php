@@ -19,13 +19,14 @@ class WorkoutRepository implements WorkoutRepositoryInterface
                 $result = $result->where('type', $workoutTypeFilter);
             }
             if($statusFilter){
+                date_default_timezone_set('Europe/Bucharest');
                 $actualDate = new DateTime('now');
                 $hour = $actualDate->format('H');
                 $actualDate= $actualDate->format('Y-m-d');
                 if($statusFilter === 'In progress'){
                     $result = $result->where([
-                        ['startingHour', '>=', $hour],
-                        ['finishHour', '<=', $hour],
+                        ['startingHour', '<=', $hour],
+                        ['finishHour', '>=', $hour],
                         ['date', $actualDate]
                     ]);
                 } else if($statusFilter === 'To be done'){
@@ -37,7 +38,7 @@ class WorkoutRepository implements WorkoutRepositoryInterface
                         $workoutTypeFilter ?
                             [['type','=', $workoutTypeFilter],['owner_id','=', $id],['date', '>=', $actualDate]]
                             :
-                        [['owner_id','=', $id],['date', '>=', $actualDate]]
+                        [['owner_id','=', $id],['date', '>', $actualDate]]
                     );
                 } else if($statusFilter === 'Finished'){
                     $result = $result->where([
