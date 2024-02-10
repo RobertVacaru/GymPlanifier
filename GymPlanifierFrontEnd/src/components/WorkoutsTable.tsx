@@ -37,6 +37,7 @@ import WorkoutInterface from "../Interfaces/WorkoutInterface.tsx";
 import Avatar from "@mui/joy/Avatar";
 import Link from "@mui/joy/Link";
 import {CircularProgress} from "@mui/joy";
+import moment from "moment";
 
 interface PropsWorkout {
   workoutPopUp: boolean,
@@ -90,12 +91,12 @@ export default function WorkoutsTable(props: PropsWorkout) {
     const actualHour: number = actualDate.getHours()
     actualDate = actualDate.toLocaleDateString()
 
-    if (workoutDate < actualDate || (workoutDate === actualDate && actualHour > finishHour)) {
+    if (moment(actualDate).isAfter(workoutDate) || (workoutDate === actualDate && actualHour > finishHour)) {
       return "Finished"
-    } else if (workoutDate > actualDate || (workoutDate === actualDate && actualHour < startingHour)) {
-      return "To be done"
-    } else {
+    }  else if(workoutDate === actualDate && finishHour >= actualHour && actualHour >= startingHour) {
       return "In progress"
+    } else {
+      return "To be done"
     }
   }
 
