@@ -3,10 +3,16 @@ import {Cell, Legend, Pie, PieChart, Tooltip} from 'recharts';
 import axios from "../api/axios.ts";
 import {CircularProgress} from "@mui/joy";
 
-export default function WorkoutPieChart(props: {setWorkoutType: Function, setWorkoutModal: Function}) {
+export default function WorkoutPieChart(props: {setWorkoutType: Function, setWorkoutModal: Function, chartLoading: boolean|null}) {
     const [workoutData, setWorkoutData] = useState(null)
     const [workoutChartData, setWorkoutChartData] = useState<Array<any>>()
     const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if(props.chartLoading){
+      getWorkoutForTodayByType()
+    }
+  }, [props.chartLoading]);
 
     const setChartData = (workoutData: any) => {
         let workoutArray = [];

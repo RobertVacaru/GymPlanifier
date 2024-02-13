@@ -140,7 +140,7 @@ export default function DailyWorkouts() {
             </Typography>
         </Stack>
 
-        <WorkoutPieChart setWorkoutType={setWorkoutType} setWorkoutModal={setWorkoutModal}/>
+        <WorkoutPieChart setWorkoutType={setWorkoutType} setWorkoutModal={setWorkoutModal} chartLoading={refreshData}/>
 
         <AddWorkoutPopUp
             workoutModal={workoutModal}
