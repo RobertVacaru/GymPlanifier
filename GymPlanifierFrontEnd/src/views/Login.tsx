@@ -62,9 +62,6 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
   );
 }
 
-/**
- * This template uses [`Inter`](https://fonts.google.com/specimen/Inter?query=inter) font.
- */
 export default function Login()  {
   //@ts-ignore
   const {login, errors} = useAuthContext();
@@ -83,10 +80,10 @@ export default function Login()  {
       <GlobalStyles
         styles={{
           ':root': {
-            '--Collapsed-breakpoint': '769px', // form will stretch when viewport is below `769px`
-            '--Cover-width': '40vw', // must be `vw` only
+            '--Collapsed-breakpoint': '769px',
+            '--Cover-width': '40vw',
             '--Form-maxWidth': '700px',
-            '--Transition-duration': '0.4s', // set to `none` to disable transition
+            '--Transition-duration': '0.4s',
           },
         }}
       />

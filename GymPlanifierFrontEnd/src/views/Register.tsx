@@ -63,9 +63,6 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
   );
 }
 
-/**
- * This template uses [`Inter`](https://fonts.google.com/specimen/Inter?query=inter) font.
- */
 export default function Register()  {
   //@ts-ignore
   const {register, errors} = useAuthContext();
